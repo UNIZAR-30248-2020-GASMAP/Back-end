@@ -17,9 +17,19 @@ public class Gas {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ids")
     int id_gas;
 
+    //Gas' name
+    @Column(name = "name_gas", nullable = false, length = 50)
+    String name_gas;
+
     //Gas' street
     @Column(name = "street_gas", nullable = false, length = 50)
     String street_gas;
+
+    //Gas' latitude and longitude
+    @Column(name = "latitude_gas", nullable = false, length = 50)
+    double latitude_gas;
+    @Column(name = "longitude_gas", nullable = false, length = 50)
+    double longitude_gas;
 
     //List of services this gas provides
     private Set<String> services_gas = new HashSet<String>(0);
@@ -74,9 +84,15 @@ public class Gas {
         return id_gas;
     }
 
+    public String getName_gas(){ return name_gas; }
+
     public String getStreet_gas() {
         return street_gas;
     }
+
+    public double getLatitude_gas(){ return latitude_gas; }
+
+    public double getLongitude_gas(){ return longitude_gas; }
 
     public Set<String> getServices_gas() {
         return services_gas;
@@ -90,9 +106,15 @@ public class Gas {
         this.id_gas = id_gas;
     }
 
+    public void setName_gas(String name_gas){ this.name_gas = name_gas; }
+
     public void setStreet_gas(String street_gas) {
         this.street_gas = street_gas;
     }
+
+    public void setLatitude_gas(double latitude_gas){ this.latitude_gas = latitude_gas; }
+
+    public void setLongitude_gas(double longitude_gas){ this.longitude_gas = longitude_gas; }
 
     public void setServices_gas(Set<String> services_gas) {
         this.services_gas = services_gas;
@@ -108,9 +130,12 @@ public class Gas {
         if (o == null || getClass() != o.getClass()) return false;
         Gas gas = (Gas) o;
         return id_gas == gas.id_gas &&
+                name_gas == gas.name_gas &&
                 street_gas.equals(gas.street_gas) &&
+                latitude_gas == gas.latitude_gas &&
+                longitude_gas == gas.longitude_gas &&
                 Objects.equals(services_gas, gas.services_gas) &&
-                Objects.equals(fuels_gas, gas.fuels_gas);
+                Objects.equals(fuels_gas, gas.fuels_gas) &&;
     }
 
     @Override
@@ -122,7 +147,10 @@ public class Gas {
     public String toString() {
         return "Gas{" +
                 "id_gas=" + id_gas +
-                ", street_gas='" + street_gas + '\'' +
+                ", name_gas=" + name_gas +
+                ", street_gas='" + street_gas +
+                "\', latitude_gas="+ latitude_gas +
+                ", longitude_gas=" + longitude_gas +
                 ", services_gas=" + services_gas +
                 ", fuels_gas=" + fuels_gas +
                 '}';
