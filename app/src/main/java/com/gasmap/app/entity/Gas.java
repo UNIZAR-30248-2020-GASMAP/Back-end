@@ -1,10 +1,7 @@
 package com.gasmap.app.entity;
 
 import javax.persistence.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 //Entity Gas Station with its attributes and relationships.
 @Entity
@@ -32,10 +29,13 @@ public class Gas {
     double longitude_gas;
 
     //List of services this gas provides
+    @ElementCollection
     private Set<String> services_gas = new HashSet<String>(0);
 
+
     //List of fuels this gas provides and its prices
-    private HashMap<String,Double> fuels_gas = new HashMap<String, Double>(0);
+    @ElementCollection
+    private Map<String,Double> fuels_gas = new HashMap<String, Double>(0);
 
 
     //Self-made functions
@@ -98,7 +98,7 @@ public class Gas {
         return services_gas;
     }
 
-    public HashMap<String, Double> getFuels_gas() {
+    public Map<String, Double> getFuels_gas() {
         return fuels_gas;
     }
 
@@ -120,7 +120,7 @@ public class Gas {
         this.services_gas = services_gas;
     }
 
-    public void setFuels_gas(HashMap<String, Double> fuels_gas) {
+    public void setFuels_gas(Map<String, Double> fuels_gas) {
         this.fuels_gas = fuels_gas;
     }
 
@@ -135,7 +135,7 @@ public class Gas {
                 latitude_gas == gas.latitude_gas &&
                 longitude_gas == gas.longitude_gas &&
                 Objects.equals(services_gas, gas.services_gas) &&
-                Objects.equals(fuels_gas, gas.fuels_gas) &&;
+                Objects.equals(fuels_gas, gas.fuels_gas);
     }
 
     @Override

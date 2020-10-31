@@ -6,9 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 @Repository
-public interface GasRepository extends org.springframework.data.repository.CrudRepository<Gas, Integer>{
+public interface GasRepository extends CrudRepository<Gas, Integer>{
     @Query(value = "SELECT * FROM ZZGas WHERE id_gas = ?1", nativeQuery = true)
     public Gas findById(int i);
-
 
 }
