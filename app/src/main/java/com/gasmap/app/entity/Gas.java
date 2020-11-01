@@ -1,17 +1,19 @@
 package com.gasmap.app.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 //Entity Gas Station with its attributes and relationships.
 @Entity
 @Table(name = "ZZGas")
 @SequenceGenerator(name="ids", initialValue=1, allocationSize=200)
-public class Gas {
+public class Gas implements Serializable {
 
     //Database's id
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ids")
+    @Column(name = "id_gas", nullable = false, length = 50)
     int id_gas;
 
     //Gas' name
@@ -36,6 +38,9 @@ public class Gas {
     //List of fuels this gas provides and its prices
     @ElementCollection
     private Map<String,Double> fuels_gas = new HashMap<String, Double>(0);
+
+    public Gas() {
+    }
 
 
     //Self-made functions
@@ -153,7 +158,7 @@ public class Gas {
                 "\', latitude_gas="+ latitude_gas +
                 ", longitude_gas=" + longitude_gas +
                 ", services_gas=" + services_gas +
-                ", fuels_gas=" + fuels_gas +
+               // ", fuels_gas=" + fuels_gas +
                 '}';
     }
 

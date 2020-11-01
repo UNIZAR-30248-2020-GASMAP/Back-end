@@ -10,4 +10,10 @@ public interface GasRepository extends CrudRepository<Gas, Integer>{
     @Query(value = "SELECT * FROM ZZGas WHERE id_gas = ?1", nativeQuery = true)
     public Gas findById(int i);
 
+    @Query(value = "SELECT * FROM ZZGas WHERE gps.fnCalcDistanceKM(latitude_gas,?1,longitude_gas,?2) < 50.0 ", nativeQuery = true)
+    public Gas[] findByDistance(double lat2, double lon2);
+
+    @Query(value = "SELECT * FROM ZZGas", nativeQuery = true)
+    public Gas[] findAllGasStations();
+
 }
