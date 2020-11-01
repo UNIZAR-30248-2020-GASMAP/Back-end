@@ -50,6 +50,7 @@ public class Gas {
 
     //Delete service from gas
     public boolean deleteService(String service){
+
         if(!this.services_gas.contains(service)){
             return this.services_gas.remove(service);
         }
