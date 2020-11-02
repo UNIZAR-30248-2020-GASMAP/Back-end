@@ -17,7 +17,8 @@ public class GasServiceImpl implements GasService {
     }
 
     @Override
-    public Gas[] getByDistance(double lat2, double lon2) {
+    public Gas[] getByDistance(double lat2, double lon2) throws Exception {
+
         return repository.findByDistance(lat2,lon2);
     }
 }
