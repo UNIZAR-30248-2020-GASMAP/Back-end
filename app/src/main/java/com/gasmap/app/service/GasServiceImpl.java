@@ -41,6 +41,16 @@ public class GasServiceImpl implements GasService {
     }
 
     @Override
+    public Gas getByStreet(String street) {
+        return repository.findByStreet(street);
+    }
+
+    @Override
+    public Gas getByLatAndLon(double lat, double lon) {
+        return repository.findByLatAndLon(lat,lon);
+    }
+
+    @Override
     public Gas addGas(Gas g){
         try{
             long n = repository.count();

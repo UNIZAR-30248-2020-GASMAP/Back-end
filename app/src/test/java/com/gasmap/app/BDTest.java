@@ -161,6 +161,23 @@ public class BDTest {
 
     }
 
+    @Test
+    public void TestOneGasStationGetBy(){
+        try{
+            double lat = 53.177762, lon = 12.199532;
+            Gas g = service.getByLatAndLon(lat,lon);
+            assertEquals(5, g.getId_gas());
+            g = service.getByStreet("Av Fourth n4");
+            assertEquals(4, g.getId_gas());
+            g = service.getById(3);
+            assertEquals("Av Third n3", g.getStreet_gas());
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     @After
     public void deleteData(){
 

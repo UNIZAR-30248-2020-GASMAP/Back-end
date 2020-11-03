@@ -8,4 +8,6 @@ public interface GasService {
     public Gas addGas(Gas g);
     public boolean updateGas(Gas g);
     public Gas getById(int i);
+    public Gas getByStreet(String street);
+    public Gas getByLatAndLon(double lat, double lon);
 }
