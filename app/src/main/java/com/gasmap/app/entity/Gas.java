@@ -1,5 +1,7 @@
 package com.gasmap.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
@@ -7,14 +9,12 @@ import java.util.*;
 //Entity Gas Station with its attributes and relationships.
 @Entity
 @Table(name = "ZZGas")
-@SequenceGenerator(name="ids", initialValue=1, allocationSize=200)
 public class Gas implements Serializable {
 
     //Database's id
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ids")
     @Column(name = "id_gas", nullable = false, length = 50)
-    int id_gas;
+    Integer id_gas;
 
     //Gas' name
     @Column(name = "name_gas", nullable = false, length = 50)
@@ -31,13 +31,17 @@ public class Gas implements Serializable {
     double longitude_gas;
 
     //List of services this gas provides
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> services_gas = new HashSet<String>(0);
 
 
     //List of fuels this gas provides and its prices
-    @ElementCollection
-    private Map<String,Double> fuels_gas = new HashMap<String, Double>(0);
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "fuels_gas", joinColumns = {
+            @JoinColumn(name = "id_gas", nullable = false, updatable = false)},
+            inverseJoinColumns = { @JoinColumn(name = "id_fuel", nullable = false, updatable = false),
+                                    @JoinColumn(name = "id_gas_fuel", table = "Fuel",nullable = false, updatable = false)})
+    public Set<Fuel> fuels_gas = new HashSet<Fuel>(0);
 
     public Gas() {
     }
@@ -63,21 +67,26 @@ public class Gas implements Serializable {
     }
 
     //Add new fuel to this gas' list
-    public boolean newFuel(String name, Double price){
-        return this.fuels_gas.putIfAbsent(name, price) != null;
+    public boolean newFuel(Fuel f){
+        return this.fuels_gas.add(f);
     }
 
     //Remove fuel from this gas' list
-    public boolean removeFuel(String name){
-        if(this.fuels_gas.containsKey(name)){
-            return this.fuels_gas.remove(name) != null;
+    public boolean removeFuel(Fuel f){
+        if(this.fuels_gas.contains(f)){
+            return this.fuels_gas.remove(f);
         }
         return true;
     }
 
     //Update fuel's price from this gas' list (if the fuel doesn't exist, it's created)
-    public boolean updateFuelPrice(String name, Double newPrice){
-        return this.fuels_gas.put(name, newPrice) != null;
+    public boolean updateFuelPrice(Fuel f){
+        if(this.fuels_gas.contains(f)){
+            this.fuels_gas.remove(f);
+            return this.fuels_gas.add(f);
+        }
+
+        return false;
     }
 
     //Generated functions
@@ -104,7 +113,7 @@ public class Gas implements Serializable {
         return services_gas;
     }
 
-    public Map<String, Double> getFuels_gas() {
+    public Set<Fuel> getFuels_gas() {
         return fuels_gas;
     }
 
@@ -126,7 +135,7 @@ public class Gas implements Serializable {
         this.services_gas = services_gas;
     }
 
-    public void setFuels_gas(Map<String, Double> fuels_gas) {
+    public void setFuels_gas(Set<Fuel> fuels_gas) {
         this.fuels_gas = fuels_gas;
     }
 
@@ -151,14 +160,26 @@ public class Gas implements Serializable {
 
     @Override
     public String toString() {
+        String stringServices = "[";
+        String stringFuels = "";
+        for(String s : services_gas){
+            stringServices += s + ",";
+        }
+        stringServices += "]";
+
+        for(Fuel f : fuels_gas){
+            stringFuels += f.toString() + ", ";
+        }
+        stringFuels += "]";
+
         return "Gas{" +
                 "id_gas=" + id_gas +
                 ", name_gas=" + name_gas +
                 ", street_gas='" + street_gas +
                 "\', latitude_gas="+ latitude_gas +
                 ", longitude_gas=" + longitude_gas +
-                ", services_gas=" + services_gas +
-               // ", fuels_gas=" + fuels_gas +
+                 "," + stringServices +
+                "," + stringFuels +
                 '}';
     }
 
