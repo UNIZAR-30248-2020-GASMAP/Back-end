@@ -178,6 +178,24 @@ public class BDTest {
         }
     }
 
+    // Given some coordinate points within Zaragoza it should
+    // produce a result including the first two Gas stations
+    // g1(Pedrola) and g2(Zaragoza)
+    @Test
+    public void TestByDistance(){
+        try{
+            double lat2 = 41.64690296, lon2 = -0.91231156;
+            Gas[] g = service.getByDistance(lat2,lon2);
+            assertEquals(2, g.length);
+            assertEquals(1, g[0].getId_gas());
+            assertEquals(2, g[1].getId_gas());
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     @After
     public void deleteData(){
 
