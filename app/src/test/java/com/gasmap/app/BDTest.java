@@ -143,8 +143,8 @@ public class BDTest {
         g5.setLongitude_gas(lon);
         g5.setLatitude_gas(lat);
 
-
         service.addGas(g5);
+        
 
     }
 

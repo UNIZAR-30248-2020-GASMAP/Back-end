@@ -36,6 +36,11 @@ public class GasServiceImpl implements GasService {
     }
 
     @Override
+    public Gas getById(int i){
+        return repository.findById(i);
+    }
+
+    @Override
     public Gas addGas(Gas g){
         try{
             long n = repository.count();
@@ -45,6 +50,18 @@ public class GasServiceImpl implements GasService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public boolean updateGas(Gas g){
+        try{
+            repository.save(g);
+            return true;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
 
