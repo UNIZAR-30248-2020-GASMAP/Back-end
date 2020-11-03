@@ -155,6 +155,7 @@ public class BDTest {
             for(Gas gas : g){
                 System.out.println(gas.toString());
             }
+            assertEquals(5, g.length);
         }catch (Exception e){
             e.printStackTrace();
         }
