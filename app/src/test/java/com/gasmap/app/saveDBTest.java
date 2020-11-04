@@ -167,10 +167,46 @@ public class saveDBTest {
             for(Gas gas : g){
                 System.out.println(gas.toString());
             }
+            assertEquals(5, g.length);
         }catch (Exception e){
             e.printStackTrace();
         }
 
+    }
+
+    @Test
+    public void TestOneGasStationGetBy(){
+        try{
+            double lat = 53.177762, lon = 12.199532;
+            Gas g = service.getByLatAndLon(lat,lon);
+            assertEquals(5, g.getId_gas());
+            g = service.getByStreet("Av Fourth n4");
+            assertEquals(4, g.getId_gas());
+            g = service.getById(3);
+            assertEquals("Av Third n3", g.getStreet_gas());
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    // Given some coordinate points within Zaragoza it should
+    // produce a result including the first two Gas stations
+    // g1(Pedrola) and g2(Zaragoza)
+    @Test
+    public void TestByDistance(){
+        try{
+            double lat2 = 41.64690296, lon2 = -0.91231156;
+            Gas[] g = service.getByDistance(lat2,lon2);
+            assertEquals(2, g.length);
+            assertEquals(1, g[0].getId_gas());
+            assertEquals(2, g[1].getId_gas());
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @After
