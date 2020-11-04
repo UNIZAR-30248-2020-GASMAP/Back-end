@@ -22,7 +22,7 @@ public class Manager {
     //private int id_gas_manager;
 
     @Column(name = "phone", nullable = false, length = 10)
-    @Pattern(regexp = "^[679]{1}[0-9]{8}$", message = "invalid phone number!")
+    @Pattern(regexp = "^[689]{1}[0-9]{8}$", message = "invalid phone number!")
     private int phone_manager;
 
     @Column(name = "pass", nullable = false,length=100)

@@ -1,0 +1,1 @@
+INSERT INTO Tec (tec_email, tec_pass) VALUES ('tec@tec.com','TecPass');

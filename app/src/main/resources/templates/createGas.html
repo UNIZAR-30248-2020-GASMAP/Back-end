@@ -1,0 +1,17 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<h1>Enter a new Gas' parameters</h1>
+<form action="#" method="post" th:object= "${gasForm}">
+    <input placeholder="ID" name="ID" type="email" required="" th:field="${gasForm.id}">
+    <input  placeholder="Name" name="Name" required="" th:field="${gasForm.name}"/>
+    <input  placeholder="Street" name="Street" required="" th:field="${gasForm.street}"/>
+    <input  placeholder="Lat" name="Lat" required="" th:field="${gasForm.lat}"/>
+    <input  placeholder="Lon" name="Lon" required="" th:field="${gasForm.lon}"/>
+    <input type="submit" value="Create Gas" name="createGas">
+</form>
+<div class="alert-danger" th:if="${formErrorMessage}" th:text="${formErrorMessage}">Error</div>
+</body>
+</html>
