@@ -2,25 +2,23 @@ package com.gasmap.app.controller;
 
 import com.gasmap.app.entity.Gas;
 import com.gasmap.app.service.GasService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.sound.midi.SysexMessage;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 @RestController
+@Api(value = "Gas' API operations")
 @CrossOrigin(origins = "*")
 public class GasController {
     @Autowired
     GasService gasService;
 
+    @ApiOperation(value = "Get all Gas in the app", response = Gas[].class)
     @GetMapping(value = "/listAllGas", produces = "application/json")
     @ResponseBody
     public Gas[] listAllGas(HttpServletResponse response){
@@ -37,6 +35,7 @@ public class GasController {
         return null;
     }
 
+    @ApiOperation(value = "Get all Gas inside a certain radius", response = Gas[].class)
     @GetMapping(value = "/listByDistance", produces = "application/json")
     @ResponseBody
     public Gas[] listByDistance(@RequestParam("lat") double lat2, @RequestParam("lon") double lon2,  HttpServletResponse response){
@@ -58,7 +57,8 @@ public class GasController {
     }
 
 
-    @PostMapping()
+    @ApiOperation(value = "Updates a certain Fuel's price", response = String.class)
+    @PostMapping(value = "/updatePrice", produces = "application/json")
     @ResponseBody
     public ResponseEntity<String> updatePrice(@RequestParam("lat") double lat, @RequestParam("lon") double lon,
                                                @RequestParam("price") double price, @RequestParam("fuel") String fuel,

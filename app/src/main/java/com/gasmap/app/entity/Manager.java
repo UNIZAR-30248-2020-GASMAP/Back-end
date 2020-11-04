@@ -108,6 +108,7 @@ public class Manager {
                 ", name_manager='" + name_manager + '\'' +
                 ", phone_manager=" + phone_manager +
                 ", pass_manager='" + pass_manager + '\'' +
+                ", " + this.gas.toString() + '\'' +
                 '}';
     }
 }

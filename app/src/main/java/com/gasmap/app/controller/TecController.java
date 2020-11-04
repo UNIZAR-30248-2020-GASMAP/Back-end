@@ -8,6 +8,8 @@ import com.gasmap.app.entity.Manager;
 import com.gasmap.app.forms.User;
 import com.gasmap.app.forms.Man;
 import com.gasmap.app.forms.GasForm;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Controller
+@Api(value = "Tec's API operations")
 @CrossOrigin(origins = "*")
 public class TecController {
 
@@ -31,12 +34,14 @@ public class TecController {
     GasService gasService;
 
 
+    @ApiOperation(value = "Tec's login GET", response = String.class)
     @GetMapping("/tecLogin")
     public String blog(Model model){
         model.addAttribute("loginForm", new User());
         return "loginTec";
     }
 
+    @ApiOperation(value = "Tec's login POST", response = String.class)
     @PostMapping("/tecLogin")
     public String loginUser(@Valid @ModelAttribute("loginForm")User user, Model model,
                                 HttpServletResponse response){
@@ -63,24 +68,28 @@ public class TecController {
         return "loginTec";
     }
 
+
+    @ApiOperation(value = "Tec's choose option GET", response = Gas[].class)
     @GetMapping("/chooseOption")
     public String getChooseOption(Model model){
         return "chooseOption";
     }
 
 
+    @ApiOperation(value = "Tec's choose option POST", response = String.class)
     @PostMapping("/chooseOption")
     public String postChooseOption(Model model, HttpServletResponse response){
         return "chooseOption";
     }
 
+    @ApiOperation(value = "Tec's create new Gas GET", response = String.class)
     @GetMapping("/createGas")
     public String getCreateGas(Model model){
         model.addAttribute("gasForm", new GasForm());
         return "createGas";
     }
 
-
+    @ApiOperation(value = "Tec's create new Gas POST", response = String.class)
     @PostMapping("/createGas")
     public String postCreateGas(@Valid @ModelAttribute("GasForm")GasForm gas, Model model,
                                 HttpServletResponse response){
@@ -93,7 +102,9 @@ public class TecController {
             g.setLongitude_gas(Double.parseDouble(gas.getLon()));
             g.setLatitude_gas(Double.parseDouble(gas.getLat()));
             g.setId_gas(Integer.parseInt(gas.getId()));
-            gasService.addGas(g);
+            g = gasService.addGas(g);
+
+            System.out.println(g.toString());
 
             response.sendRedirect("/chooseOption");
             return "chooseOption";
@@ -103,14 +114,14 @@ public class TecController {
         return "chooseOption";
     }
 
-
+    @ApiOperation(value = "Tec's create new Manager account GET", response = String.class)
     @GetMapping("/createManager")
     public String getCreateMan(Model model){
         model.addAttribute("managerForm", new Man());
         return "createManager";
     }
 
-
+    @ApiOperation(value = "Tec's create new Manager account POST", response = String.class)
     @PostMapping("/createManager")
     public String postCreateMan(@Valid @ModelAttribute("managerForm")Man man, Model model,
                                     HttpServletResponse response){
@@ -126,7 +137,10 @@ public class TecController {
 
             m.setGas(g);
 
-            manService.addManager(m);
+            m = manService.addManager(m);
+
+            System.out.println(m.toString());
+
             response.sendRedirect("/chooseOption");
 
             return "chooseOption";

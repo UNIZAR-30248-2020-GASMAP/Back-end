@@ -13,14 +13,13 @@ public class ManagerServiceImpl implements ManagerService {
     ManagerRepository repository;
 
     @Override
-    public Boolean addManager(Manager m) throws Exception {
+    public Manager addManager(Manager m) throws Exception {
         try {
-            repository.save(m);
-            return true;
+            return repository.save(m);
         }catch(Exception e) {
             System.out.println(e);
         }
-        return false;
+        return null;
     }
 
     @Override
