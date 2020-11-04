@@ -6,5 +6,6 @@ public interface fuelService {
 
     Fuel[] getAll();
     boolean addFuel(Fuel f);
+    boolean deleteFuel(Fuel f);
 
 }

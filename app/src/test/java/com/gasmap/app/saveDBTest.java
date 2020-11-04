@@ -20,7 +20,7 @@ import java.util.Set;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = AppApplication.class)
-public class BDTest {
+public class saveDBTest {
 
     @Autowired
     GasService service;
@@ -28,17 +28,30 @@ public class BDTest {
     @Autowired
     fuelService fservice;
 
+    Gas g1;
+    Gas g2;
+    Gas g3;
+    Gas g4;
+    Gas g5;
+
+    Fuel f1;
+    Fuel f2;
+    Fuel f3;
+    Fuel f4;
+
     @Before
     public void createData(){
 
         assertNotNull(service);
 
         //Declaration of Gas' attributes
-        Gas g1 = new Gas();
-        Gas g2 = new Gas();
-        Gas g3 = new Gas();
-        Gas g4 = new Gas();
-        Gas g5 = new Gas();
+        g1 = new Gas();
+        g2 = new Gas();
+        g3 = new Gas();
+        g4 = new Gas();
+        g5 = new Gas();
+
+
         String name;
         String street;
         Set<Fuel> fuels = new HashSet<Fuel>(0);
@@ -74,9 +87,9 @@ public class BDTest {
         g2.setStreet_gas(street);
         g2.setId_gas(id_g2);
 //        g2.fuels_gas.put("Fuel1",1.1);
-        Fuel f = new Fuel("Fuel1",1.1, g2.getId_gas());
-        fservice.addFuel(f);
-        fuels.add(f);
+        f1 = new Fuel("Fuel1",1.1, g2.getId_gas());
+        fservice.addFuel(f1);
+        fuels.add(f1);
         g2.setFuels_gas(fuels);
         services.add("Service1");
         g2.setServices_gas(services);
@@ -94,9 +107,9 @@ public class BDTest {
         street = "Av Third n3";
         g3.setStreet_gas(street);
         g3.setId_gas(id_g3);
-        f = new Fuel("Fuel2",2.2, g3.getId_gas());
-        fservice.addFuel(f);
-        fuels.add(f);
+        f2 = new Fuel("Fuel2",2.2, g3.getId_gas());
+        fservice.addFuel(f2);
+        fuels.add(f2);
         g3.setFuels_gas(fuels);
         services.add("Service2");
         g3.setServices_gas(services);
@@ -114,9 +127,9 @@ public class BDTest {
         street = "Av Fourth n4";
         g4.setStreet_gas(street);
         g4.setId_gas(id_g4);
-        f = new Fuel("Fuel3",3.3, g4.getId_gas());
-        fservice.addFuel(f);
-        fuels.add(f);
+        f3 = new Fuel("Fuel3",3.3, g4.getId_gas());
+        fservice.addFuel(f3);
+        fuels.add(f3);
         g4.setFuels_gas(fuels);
         services.add("Service3");
         g4.setServices_gas(services);
@@ -134,9 +147,9 @@ public class BDTest {
         street = "Av Fifth n5";
         g5.setStreet_gas(street);
         g5.setId_gas(id_g5);
-        f = new Fuel("Fuel4",4.4, g5.getId_gas());
-        fservice.addFuel(f);
-        fuels.add(f);
+        f4 = new Fuel("Fuel4",4.4, g5.getId_gas());
+        fservice.addFuel(f4);
+        fuels.add(f4);
         g5.setFuels_gas(fuels);
         services.add("Service4");
         g5.setServices_gas(services);
@@ -144,7 +157,6 @@ public class BDTest {
         g5.setLatitude_gas(lat);
 
         service.addGas(g5);
-        
 
     }
 
@@ -163,6 +175,16 @@ public class BDTest {
 
     @After
     public void deleteData(){
+
+        service.deleteGas(g1);
+        service.deleteGas(g2);
+        service.deleteGas(g3);
+        service.deleteGas(g4);
+        service.deleteGas(g5);
+        fservice.deleteFuel(f1);
+        fservice.deleteFuel(f2);
+        fservice.deleteFuel(f3);
+        fservice.deleteFuel(f4);
 
     }
 }

@@ -32,4 +32,15 @@ public class fuelServiceImpl implements fuelService {
         }
         return false;
     }
+
+    @Override
+    public boolean deleteFuel(Fuel f) {
+        try{
+            frepository.delete(f);
+            return true;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

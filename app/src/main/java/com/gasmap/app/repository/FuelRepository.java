@@ -14,4 +14,7 @@ public interface FuelRepository extends CrudRepository<Fuel, String>{
     @Query(value = "SELECT * FROM Fuel", nativeQuery = true)
     public Fuel[] findAllFuels();
 
+    @Query(value = "SELECT * FROM Fuel WHERE id_fuel = ?1 AND id_gas_fuel = ?2", nativeQuery = true)
+    public Fuel findFuelByIdAndGas(String id_fuel, int id_gas);
+
 }

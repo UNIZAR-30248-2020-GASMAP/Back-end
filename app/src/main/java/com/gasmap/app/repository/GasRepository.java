@@ -16,4 +16,7 @@ public interface GasRepository extends CrudRepository<Gas, Integer>{
     @Query(value = "SELECT * FROM ZZGas", nativeQuery = true)
     public Gas[] findAllGasStations();
 
+    @Query(value = "SELECT * FROM ZZGas WHERE latitude_gas = ?1 AND longitude_gas = ?2", nativeQuery = true)
+    public Gas findByLatLon(double lat, double lon);
+
 }
