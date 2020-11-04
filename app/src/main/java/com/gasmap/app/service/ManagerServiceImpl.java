@@ -1,16 +1,19 @@
 package com.gasmap.app.service;
 
+import com.gasmap.app.entity.Gas;
 import com.gasmap.app.entity.Manager;
 import com.gasmap.app.repository.ManagerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ManagerServiceImpl implements ManagerService {
 
     @Autowired
     ManagerRepository repository;
 
     @Override
-    public Boolean createManager(Manager m) throws Exception {
+    public Boolean addManager(Manager m) throws Exception {
         try {
             repository.save(m);
             return true;
@@ -21,13 +24,8 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public Manager getManager(String email) throws Exception {
-        try {
+    public Manager getManager(String email){
             return repository.findByEmail(email);
-        }catch(Exception e) {
-            System.out.println(e);
-        }
-        return null;
     }
 
     @Override
@@ -82,6 +80,17 @@ public class ManagerServiceImpl implements ManagerService {
             m = repository.save(m);
             return true;
         }catch(Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteManager(Manager m) {
+        try{
+            repository.delete(m);
+            return true;
+        }catch(Exception e){
             e.printStackTrace();
         }
         return false;

@@ -1,7 +1,5 @@
 package com.gasmap.app.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
@@ -42,6 +40,10 @@ public class Gas implements Serializable {
             inverseJoinColumns = { @JoinColumn(name = "id_fuel", nullable = false, updatable = false),
                                     @JoinColumn(name = "id_gas_fuel", table = "Fuel",nullable = false, updatable = false)})
     public Set<Fuel> fuels_gas = new HashSet<Fuel>(0);
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "email_manager_gas", referencedColumnName = "email")
+    private Manager manager;
 
     public Gas() {
     }
@@ -90,9 +92,21 @@ public class Gas implements Serializable {
     }
 
     //Generated functions
-    public Gas(String street_gas, Set<String> services_gas) {
+    public Gas(String street_gas, Set<String> services_gas, Manager manager) {
         this.street_gas = street_gas;
         this.services_gas = services_gas;
+        this.manager = manager;
+    }
+
+    public Gas(Integer id_gas, String name_gas, String street_gas, double latitude_gas, double longitude_gas, Set<String> services_gas, Set<Fuel> fuels_gas, Manager manager) {
+        this.id_gas = id_gas;
+        this.name_gas = name_gas;
+        this.street_gas = street_gas;
+        this.latitude_gas = latitude_gas;
+        this.longitude_gas = longitude_gas;
+        this.services_gas = services_gas;
+        this.fuels_gas = fuels_gas;
+        this.manager = manager;
     }
 
     public int getId_gas() {
@@ -117,6 +131,8 @@ public class Gas implements Serializable {
         return fuels_gas;
     }
 
+    public Manager getManager() { return manager; }
+
     public void setId_gas(int id_gas) {
         this.id_gas = id_gas;
     }
@@ -139,18 +155,21 @@ public class Gas implements Serializable {
         this.fuels_gas = fuels_gas;
     }
 
+    public void setManager(Manager manager) { this.manager = manager; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Gas gas = (Gas) o;
         return id_gas == gas.id_gas &&
-                name_gas == gas.name_gas &&
+                Objects.equals(name_gas, gas.name_gas) &&
                 street_gas.equals(gas.street_gas) &&
                 latitude_gas == gas.latitude_gas &&
                 longitude_gas == gas.longitude_gas &&
                 Objects.equals(services_gas, gas.services_gas) &&
-                Objects.equals(fuels_gas, gas.fuels_gas);
+                Objects.equals(fuels_gas, gas.fuels_gas) &&
+                Objects.equals(manager, gas.manager);
     }
 
     @Override

@@ -1,9 +1,6 @@
 package com.gasmap.app.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -32,12 +29,21 @@ public class Manager {
     @NotBlank
     private String pass_manager;
 
-    public Manager(@NotBlank @Email String email_manager, @NotBlank String name_manager, @Pattern(regexp = "^[679]{1}[0-9]{8}$", message = "invalid phone number!") int phone_manager, @NotBlank String pass_manager) {
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_gas_manager", referencedColumnName = "id_gas")
+    private Gas gas;
+
+    public Manager() {
+    }
+
+    public Manager(@NotBlank @Email String email_manager, @NotBlank String name_manager, @Pattern(regexp = "^[679]{1}[0-9]{8}$", message = "invalid phone number!") int phone_manager, @NotBlank String pass_manager, Gas gas) {
         this.email_manager = email_manager;
         this.name_manager = name_manager;
         this.phone_manager = phone_manager;
         this.pass_manager = pass_manager;
+        this.gas = gas;
     }
+
 
     public String getEmail() {
         return email_manager;
@@ -69,6 +75,14 @@ public class Manager {
 
     public void setPass_manager(String pass_manager) {
         this.pass_manager = pass_manager;
+    }
+
+    public Gas getGas() {
+        return gas;
+    }
+
+    public void setGas(Gas gas) {
+        this.gas = gas;
     }
 
     @Override
