@@ -4,7 +4,7 @@ import com.gasmap.app.entity.Manager;
 import org.springframework.stereotype.Service;
 
 public interface ManagerService {
-    public Manager addManager(Manager m) throws Exception;
+    public Manager addManager(Manager m);
     public Manager getManager(String m);
     public Manager loginManager(String e, String p) throws Exception;
     public Boolean updatePass(String email, String oldPass, String newPass) throws Exception;

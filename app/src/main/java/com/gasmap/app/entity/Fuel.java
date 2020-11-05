@@ -67,6 +67,14 @@ public class Fuel implements Serializable {
 
     public void setChange_fuel(String change) { this.change_fuel = change; }
 
+    public Integer getId_gas() {
+        return id_gas;
+    }
+
+    public void setId_gas(Integer id_gas) {
+        this.id_gas = id_gas;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -28,28 +28,18 @@ public class saveDBTest {
     @Autowired
     fuelService fservice;
 
-    Gas g1;
-    Gas g2;
-    Gas g3;
-    Gas g4;
-    Gas g5;
-
-    Fuel f1;
-    Fuel f2;
-    Fuel f3;
-    Fuel f4;
+    Gas[] g;
+    Fuel f[];
 
     @Before
     public void createData(){
 
-        assertNotNull(service);
+        g = new Gas[5];
+        f = new Fuel[4];
 
-        //Declaration of Gas' attributes
-        g1 = new Gas();
-        g2 = new Gas();
-        g3 = new Gas();
-        g4 = new Gas();
-        g5 = new Gas();
+        for(int i=0; i<5; i++){
+            g[i] = new Gas();
+        }
 
 
         String name;
@@ -58,116 +48,111 @@ public class saveDBTest {
         Set<String> services = new HashSet<String>(0);
         double lon;
         double lat;
-        int id_g1 = 0;
-        int id_g2 = 1;
-        int id_g3 = 2;
-        int id_g4 = 3;
-        int id_g5 = 4;
 
         //First Gas (Pedrola/Zaragoza)
         lat = 41.786183;
         lon = -1.219913;
         name = "First";
-        g1.setName_gas(name);
+        g[0].setName_gas(name);
         street = "Av First n1";
-        g1.setStreet_gas(street);
-        g1.setServices_gas(services);
-        g1.setLongitude_gas(lon);
-        g1.setLatitude_gas(lat);
-        g1.setId_gas(id_g1);
+        g[0].setStreet_gas(street);
+        g[0].setServices_gas(services);
+        g[0].setLongitude_gas(lon);
+        g[0].setLatitude_gas(lat);
 
-        service.addGas(g1);
+        g[0] = service.addGas(g[0]);
 
         //Second Gas (Zaragoza)
         lat = 41.632936;
         lon = -0.918802;
         name = "Second";
-        g2.setName_gas(name);
+        g[1].setName_gas(name);
         street = "Av Second n2";
-        g2.setStreet_gas(street);
-        g2.setId_gas(id_g2);
+        g[1].setStreet_gas(street);
 //        g2.fuels_gas.put("Fuel1",1.1);
-        f1 = new Fuel("Fuel1",1.1, g2.getId_gas());
-        fservice.addFuel(f1);
-        fuels.add(f1);
-        g2.setFuels_gas(fuels);
+        g[1] = service.addGas(g[1]);
+        f[0] = new Fuel("Fuel1",1.1, g[1].getId_gas());
+        fservice.addFuel(f[0]);
+        fuels.add(f[0]);
+        g[1].setFuels_gas(fuels);
         services.add("Service1");
-        g2.setServices_gas(services);
-        g2.setLongitude_gas(lon);
-        g2.setLatitude_gas(lat);
+        g[1].setServices_gas(services);
+        g[1].setLongitude_gas(lon);
+        g[1].setLatitude_gas(lat);
 
 
-        service.addGas(g2);
+        g[1] = service.updateGas(g[1]);
 
         //Third Gas (Andalucia)
         lat = 36.316428;
         lon = -5.492767;
         name = "Third";
-        g3.setName_gas(name);
+        g[2].setName_gas(name);
         street = "Av Third n3";
-        g3.setStreet_gas(street);
-        g3.setId_gas(id_g3);
-        f2 = new Fuel("Fuel2",2.2, g3.getId_gas());
-        fservice.addFuel(f2);
-        fuels.add(f2);
-        g3.setFuels_gas(fuels);
+        g[2].setStreet_gas(street);
+        g[2] = service.addGas(g[2]);
+        f[1] = new Fuel("Fuel2",2.2, g[2].getId_gas());
+        fservice.addFuel(f[1]);
+        fuels.add(f[1]);
+        g[2].setFuels_gas(fuels);
         services.add("Service2");
-        g3.setServices_gas(services);
-        g3.setLongitude_gas(lon);
-        g3.setLatitude_gas(lat);
-        g3.setId_gas(id_g3);
+        g[2].setServices_gas(services);
+        g[2].setLongitude_gas(lon);
+        g[2].setLatitude_gas(lat);
 
-        service.addGas(g3);
+        g[2] = service.updateGas(g[2]);
 
         //Fourth Gas (Galicia)
         lat = 43.191129;
         lon = -8.563962;
         name = "Fourth";
-        g4.setName_gas(name);
+        g[3].setName_gas(name);
         street = "Av Fourth n4";
-        g4.setStreet_gas(street);
-        g4.setId_gas(id_g4);
-        f3 = new Fuel("Fuel3",3.3, g4.getId_gas());
-        fservice.addFuel(f3);
-        fuels.add(f3);
-        g4.setFuels_gas(fuels);
+        g[3].setStreet_gas(street);
+        g[3] = service.addGas(g[3]);
+        f[2] = new Fuel("Fuel3",3.3, g[3].getId_gas());
+        fservice.addFuel(f[2]);
+        fuels.add(f[2]);
+        g[3].setFuels_gas(fuels);
         services.add("Service3");
-        g4.setServices_gas(services);
-        g4.setLongitude_gas(lon);
-        g4.setLatitude_gas(lat);
+        g[3].setServices_gas(services);
+        g[3].setLongitude_gas(lon);
+        g[3].setLatitude_gas(lat);
 
 
-        service.addGas(g4);
+        g[3] = service.updateGas(g[3]);
 
         //Fifth Gas (Germany)
         lat = 53.177762;
         lon = 12.199532;
         name = "Fifth";
-        g5.setName_gas(name);
+        g[4].setName_gas(name);
         street = "Av Fifth n5";
-        g5.setStreet_gas(street);
-        g5.setId_gas(id_g5);
-        f4 = new Fuel("Fuel4",4.4, g5.getId_gas());
-        fservice.addFuel(f4);
-        fuels.add(f4);
-        g5.setFuels_gas(fuels);
+        g[4].setStreet_gas(street);
+        g[4] = service.addGas(g[4]);
+        f[3] = new Fuel("Fuel4",4.4, g[4].getId_gas());
+        fservice.addFuel(f[3]);
+        fuels.add(f[3]);
+        g[4].setFuels_gas(fuels);
         services.add("Service4");
-        g5.setServices_gas(services);
-        g5.setLongitude_gas(lon);
-        g5.setLatitude_gas(lat);
+        g[4].setServices_gas(services);
+        g[4].setLongitude_gas(lon);
+        g[4].setLatitude_gas(lat);
 
-        service.addGas(g5);
+        g[4] = service.updateGas(g[4]);
+
+
 
     }
 
     @Test
-    public void Test1() {
+    public void Test1AllGas() {
         try{
-            Gas[] g = service.getAllGas();
-            for(Gas gas : g){
-                System.out.println(gas.toString());
+            Gas[] g0 = service.getAllGas();
+            assertEquals(5, g0.length);
+            for(int i=0; i<g0.length; i++){
+                assertEquals(g[i], g0[i]);
             }
-            assertEquals(5, g.length);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -178,14 +163,12 @@ public class saveDBTest {
     public void TestOneGasStationGetBy(){
         try{
             double lat = 53.177762, lon = 12.199532;
-            Gas g = service.getByLatAndLon(lat,lon);
-            assertEquals(5, g.getId_gas());
-            g = service.getByStreet("Av Fourth n4");
-            assertEquals(4, g.getId_gas());
-            g = service.getById(3);
-            assertEquals("Av Third n3", g.getStreet_gas());
-
-
+            Gas g1 = service.getByLatAndLon(lat,lon);
+            assertEquals(5, g1.getId_gas());
+            g1 = service.getByStreet("Av Fourth n4");
+            assertEquals(4, g1.getId_gas());
+            g1 = service.getById(3);
+            assertEquals("Av Third n3", g1.getStreet_gas());
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -198,10 +181,10 @@ public class saveDBTest {
     public void TestByDistance(){
         try{
             double lat2 = 41.64690296, lon2 = -0.91231156;
-            Gas[] g = service.getByDistance(lat2,lon2);
-            assertEquals(2, g.length);
-            assertEquals(1, g[0].getId_gas());
-            assertEquals(2, g[1].getId_gas());
+            Gas[] g2 = service.getByDistance(lat2,lon2);
+            assertEquals(2, g2.length);
+            assertEquals(1, g2[0].getId_gas());
+            assertEquals(2, g2[1].getId_gas());
 
 
         }catch (Exception e){
@@ -211,16 +194,11 @@ public class saveDBTest {
 
     @After
     public void deleteData(){
-
-        service.deleteGas(g1);
-        service.deleteGas(g2);
-        service.deleteGas(g3);
-        service.deleteGas(g4);
-        service.deleteGas(g5);
-        fservice.deleteFuel(f1);
-        fservice.deleteFuel(f2);
-        fservice.deleteFuel(f3);
-        fservice.deleteFuel(f4);
-
+        for (Gas gas : g){
+            service.deleteGas(gas);
+        }
+        for (Fuel fuel : f){
+            fservice.deleteFuel(fuel);
+        }
     }
 }

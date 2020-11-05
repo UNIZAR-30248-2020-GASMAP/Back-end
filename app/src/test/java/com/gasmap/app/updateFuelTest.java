@@ -16,6 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
 import java.util.Set;
 
+import static org.junit.Assert.assertEquals;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = AppApplication.class)
 public class updateFuelTest {
@@ -55,48 +57,51 @@ public class updateFuelTest {
     @Test
     public void Test1(){
 
-        Set<Fuel> fuels1 = service.getById(g1.getId_gas()).getFuels_gas();
+
+        String response = service.updateFuel(g1.getLatitude_gas(),g1.getLongitude_gas(),null,null);
+
+        //It won't work, fuel does not exist
+        assertEquals("Fuel not found", response);
+
+        //Change with the same price
+        response = service.updateFuel(g1.getLatitude_gas(),g1.getLongitude_gas(),f.getPrice_fuel(),f.getId_fuel());
+
+        assertEquals("Changed correctly", response);
 
         f = new Fuel("Fuel1",0.1,g1.getId_gas());
 
         //It won't work, price is too low
-        String response = service.updateFuel(g1.getLatitude_gas(),g1.getLongitude_gas(),f.getPrice_fuel(),f.getId_fuel());
+        response = service.updateFuel(g1.getLatitude_gas(),g1.getLongitude_gas(),f.getPrice_fuel(),f.getId_fuel());
 
-        System.out.println("No: " + response);
+        assertEquals("Cannot change to that price", response);
 
         f = new Fuel("Fuel1",2.0,g1.getId_gas());
 
         //It won't work, price is too high
         response = service.updateFuel(g1.getLatitude_gas(),g1.getLongitude_gas(),f.getPrice_fuel(),f.getId_fuel());
 
-        System.out.println("No: " + response);
+        assertEquals("Cannot change to that price", response);
 
         f = new Fuel("Fuel1",1.05,g1.getId_gas());
 
         //It won't work, haven't passed 1 day since last time it was changed
         response = service.updateFuel(g1.getLatitude_gas(),g1.getLongitude_gas(),f.getPrice_fuel(),f.getId_fuel());
 
-        System.out.println("No: " + response);
+        assertEquals("Cannot change until tomorrow", response);
+
 
         //It will work, we are changing "tomorrow"
         response = service.updateFuelDepenInjection(g1.getLatitude_gas(),g1.getLongitude_gas(),
                                         f.getPrice_fuel(),f.getId_fuel(),LocalDate.now().plusDays(1));
 
-        System.out.println("Yes: " + response);
+        assertEquals("Changed correctly", response);
 
-        Set<Fuel> fuels2 = service.getById(g1.getId_gas()).getFuels_gas();
+        Fuel fuel = new Fuel();
+        fuel = fservice.findFuelByIdAndGas(f.getId_fuel(), f.getId_gas());
 
-        System.out.println("Unchanged Fuel (price is 1.1): ");
+        //Confirm price is changed correctly
+        assertEquals(f, fuel);
 
-        for(Fuel ff : fuels1){
-            System.out.println(ff.toString());
-        }
-
-        System.out.println("Changed Fuel (price is 1.05): ");
-
-        for(Fuel ff : fuels2){
-            System.out.println(ff.toString());
-        }
 
     }
 

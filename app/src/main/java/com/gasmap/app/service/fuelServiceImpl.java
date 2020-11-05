@@ -1,5 +1,6 @@
 package com.gasmap.app.service;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import com.gasmap.app.entity.Fuel;
 import com.gasmap.app.repository.FuelRepository;
 import com.gasmap.app.repository.GasRepository;
@@ -43,4 +44,15 @@ public class fuelServiceImpl implements fuelService {
         }
         return false;
     }
+
+    @Override
+    public Fuel findFuelByIdAndGas(String idFuel, int idGas){
+        try{
+            return frepository.findFuelByIdAndGas(idFuel, idGas);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

@@ -56,8 +56,8 @@ public class ManagerTest {
         Set<String> services = new HashSet<String>(0);
         double lon;
         double lat;
-        int id_g1 = 0;
-        int id_g2 = 1;
+        int id_g1 = 1;
+        int id_g2 = 2;
 
         String manager_email;
         String manager_name;
@@ -117,7 +117,6 @@ public class ManagerTest {
         m2 = new Manager(manager_email,manager_name,manager_phone,manager_pass,g2);
         g2.setManager(m2);
 
-
         gservice.addGas(g2);
         mservice.addManager(m2);
     }
@@ -128,9 +127,6 @@ public class ManagerTest {
             Gas[] g = gservice.getAllGas();
             Manager mA = mservice.getManager("nacho@nacho.com");
             Manager mB = mservice.getManager("victor@victor.com");
-            for(Gas gas : g){
-                System.out.println(gas.toString());
-            }
             assertEquals(2, g.length);
             assertEquals(mA, g[0].getManager());
             assertEquals(mB, g[1].getManager());
@@ -143,8 +139,51 @@ public class ManagerTest {
 
     }
 
+    @Test
+    public void invalidEmail(){
+
+
+        Manager manager = new Manager("a","name",666666666,"pass",null);
+
+        manager = mservice.addManager(m2);
+
+
+    }
+
+    @Test
+    public void TestLogin(){
+        try{
+            Manager mA = mservice.getManager("nacho@nacho.com");
+
+            //Password is wrong
+            Manager res = mservice.loginManager(mA.getEmail(), "victor");
+
+            assertNull(res);
+
+            //Password is wrong
+            res = mservice.loginManager(mA.getEmail(), null);
+
+            assertNull(res);
+
+            //Login is correct
+            res = mservice.loginManager(mA.getEmail(), "nacho");
+
+            assertEquals(mA,res);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
     @After
     public void deleteData() throws Exception {
+
+        System.out.println(g1.toString());
+        System.out.println(g2.toString());
+        System.out.println(m1.toString());
+        System.out.println(m2.toString());
+        System.out.println(f1.toString());
+
 
         gservice.deleteGas(g1);
         gservice.deleteGas(g2);

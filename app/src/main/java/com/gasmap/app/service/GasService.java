@@ -11,7 +11,7 @@ public interface GasService {
 
     public Gas addGas(Gas g);
 
-    public boolean updateGas(Gas g);
+    public Gas updateGas(Gas g);
 
     public boolean deleteGas(Gas g);
 

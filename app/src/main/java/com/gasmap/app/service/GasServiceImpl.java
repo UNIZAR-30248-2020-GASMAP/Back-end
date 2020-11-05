@@ -65,15 +65,14 @@ public class GasServiceImpl implements GasService {
     }
 
     @Override
-    public boolean updateGas(Gas g){
+    public Gas updateGas(Gas g){
         try{
-            repository.save(g);
-            return true;
+            return repository.save(g);
         }catch(Exception e){
             e.printStackTrace();
         }
 
-        return false;
+        return null;
     }
 
     @Override
@@ -94,23 +93,26 @@ public class GasServiceImpl implements GasService {
             Gas g = repository.findByLatLon(lat,lon);
             Fuel oldFuel = fuel_repository.findFuelByIdAndGas(fuel,g.getId_gas());
             if(oldFuel == null){
-                return "No se ha encontrado el combustible";
+                return "Fuel not found";
+            }
+            if(price.equals(oldFuel.getPrice_fuel())){
+                return "Changed correctly";
             }
             if(price * 0.95 > oldFuel.getPrice_fuel() || price * 1.05 < oldFuel.getPrice_fuel()){
-                return "Mensaje antibandalismo";
+                return "Cannot change to that price";
             }
             LocalDate oFuel = LocalDate.parse(oldFuel.getChange_fuel());
             if(!oFuel.isBefore(LocalDate.now())){
-                return "No han pasado 24h desde el ultimo cambio";
+                return "Cannot change until tomorrow";
             }
             oldFuel.setChange_fuel(LocalDate.now().toString());
             oldFuel.setPrice_fuel(price);
             fuel_repository.save(oldFuel);
-            return "Se ha cambiado correctamente";
+            return "Changed correctly";
         }catch(Exception e){
             e.printStackTrace();
         }
-        return "No se ha podido resolver la peticion";
+        return "Cannot resolve operation";
     }
 
 
@@ -120,23 +122,26 @@ public class GasServiceImpl implements GasService {
             Gas g = repository.findByLatLon(lat,lon);
             Fuel oldFuel = fuel_repository.findFuelByIdAndGas(fuel,g.getId_gas());
             if(oldFuel == null){
-                return "No se ha encontrado el combustible";
+                return "Fuel not found";
+            }
+            if(price.equals(oldFuel.getPrice_fuel())){
+                return "Changed correctly";
             }
             if(price * 0.95 > oldFuel.getPrice_fuel() || price * 1.05 < oldFuel.getPrice_fuel()){
-                return "Mensaje antibandalismo";
+                return "Cannot change to that price";
             }
             LocalDate oFuel = LocalDate.parse(oldFuel.getChange_fuel());
             if(!oFuel.isBefore(ld)){
-                return "No han pasado 24h desde el ultimo cambio";
+                return "Cannot change until tomorrow";
             }
             oldFuel.setChange_fuel(ld.toString());
             oldFuel.setPrice_fuel(price);
             fuel_repository.save(oldFuel);
-            return "Se ha cambiado correctamente";
+            return "Changed correctly";
         }catch(Exception e){
             e.printStackTrace();
         }
-        return "No se ha podido resolver la peticion";
+        return "Cannot resolve operation";
     }
 
 }
