@@ -1,11 +1,22 @@
 package com.gasmap.app.controller;
 
 
+import com.gasmap.app.entity.Gas;
+import com.gasmap.app.entity.Manager;
+import com.gasmap.app.service.GasService;
 import com.gasmap.app.service.ManagerService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.LinkedHashMap;
 
 @RestController
 @Api(value = "Manager's API operations")
@@ -14,5 +25,100 @@ public class ManagerController {
 
     @Autowired
     ManagerService mservice;
+    @Autowired
+    GasService gservice;
+
+    @ApiOperation(value = "Operation to log a Manager in", response = Manager.class)
+    @ApiImplicitParams({@ApiImplicitParam(name = "email", value = "Manager email"),
+            @ApiImplicitParam(name = "password", value = "Manager password")
+    })
+    @PostMapping(value = "/loginManager", produces = "application/json", consumes = "application/json")
+    @ResponseBody
+    public ResponseEntity<Manager> login(@RequestBody Object u, HttpServletResponse response, BindingResult result){
+
+        try {
+            LinkedHashMap<String,String> lhm = (LinkedHashMap) u;
+            String c = lhm.get("email");
+            String p = lhm.get("password");
+
+            System.out.println("Correo: " + c);
+            System.out.println("Password: " + p);
+
+            Manager res = mservice.loginManager(c,p);
+
+            System.out.println(res.toString());
+            ResponseEntity<Manager> r = new ResponseEntity<Manager>(res, HttpStatus.OK);
+            return new ResponseEntity<Manager>(res, HttpStatus.OK);
+        }catch(Exception e) {
+            System.out.println(e);
+        }
+        Manager manager = new Manager();
+        System.out.println(manager.getEmail());
+        return new ResponseEntity<Manager>(HttpStatus.BAD_REQUEST);
+    }
+    /*
+    @ApiOperation(value = "Operation to register a new Manager", response = Manager.class)
+    @ApiImplicitParams({@ApiImplicitParam(name = "email", value = "Manager email"),
+            @ApiImplicitParam(name = "name", value = "Manager's full name"),
+            @ApiImplicitParam(name = "phone", value = "Manager's phone number"),
+            @ApiImplicitParam(name = "password", value = "Manager password"),
+
+    })
+
+    @PostMapping(value = "/registerManager", produces = "application/json")
+    @ResponseBody
+    public Manager register(@RequestParam("email") String email, @RequestParam("name") String name,
+                             @RequestParam("phone") int phone, @RequestParam("pass") String pass,
+                            @RequestParam("gas_id") String gas_id,
+                             HttpServletResponse response){
+        System.out.println("Entro en el register");
+        try {
+            System.out.println("name: " + name);
+            System.out.println("email: " + email);
+            System.out.println("password: " + pass);
+            System.out.println("phone: " + phone);
+
+            Gas gas = gservice.getById(Integer.parseInt(gas_id));
+            Manager manager = new Manager(email, name, phone, pass, gas);                  //HELP WANTED-------------------------------------------------!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            System.out.println(manager.toString());
+            return mservice.addManager(manager);
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }*/
+
+    @ApiOperation(value = "Operation to delete a Manager", response = Boolean.class)
+    @ApiImplicitParams({@ApiImplicitParam(name = "email", value = "Manager email"),
+            @ApiImplicitParam(name = "pass", value = "Manager password"),
+            @ApiImplicitParam(name = "passCheck", value = "Manager password confirmation")
+    })
+    @PostMapping(value = "/deleteManager", produces = "application/json")
+    @ResponseBody
+    public Boolean deleteManager(@RequestBody Object u, HttpServletResponse response, BindingResult result){
+
+        try {
+            LinkedHashMap<String,String> lhm = (LinkedHashMap) u;
+
+            String email = lhm.get("email");
+            String pass = lhm.get("pass");
+            String passCheck = lhm.get("passCheck");
+            Manager m = mservice.getManagerWithPass(email,pass);
+            if(pass == passCheck && m.getPass_manager().equals(String.valueOf(pass.hashCode()))){
+                return mservice.deleteManager(m);
+            }
+            else{
+                //Pass and confirmation do not coincide or it does not check with the real manager pass
+                return false;
+            }
+
+
+        }catch(Exception e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
+
 
 }

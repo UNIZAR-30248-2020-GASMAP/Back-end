@@ -30,6 +30,9 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
+    public Manager getManagerWithPass(String email, String pass){return repository.findByEmailAndPass(email,pass);}
+
+    @Override
     public Manager loginManager(String email, String pass) {
         try{
             if(email == null || pass == null){
