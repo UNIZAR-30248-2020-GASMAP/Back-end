@@ -178,13 +178,6 @@ public class ManagerTest {
     @After
     public void deleteData() throws Exception {
 
-        System.out.println(g1.toString());
-        System.out.println(g2.toString());
-        System.out.println(m1.toString());
-        System.out.println(m2.toString());
-        System.out.println(f1.toString());
-
-
         gservice.deleteGas(g1);
         gservice.deleteGas(g2);
         mservice.deleteManager(m1);
