@@ -34,17 +34,14 @@ public class ManagerController {
     })
     @PostMapping(value = "/loginManager", produces = "application/json", consumes = "application/json")
     @ResponseBody
-    public ResponseEntity<Manager> login(@RequestBody Object u, HttpServletResponse response, BindingResult result){
+    public ResponseEntity<Manager> login(@RequestParam("email") String email, @RequestParam("password") String password, HttpServletResponse response, BindingResult result){
 
         try {
-            LinkedHashMap<String,String> lhm = (LinkedHashMap) u;
-            String c = lhm.get("email");
-            String p = lhm.get("password");
 
-            System.out.println("Correo: " + c);
-            System.out.println("Password: " + p);
+            System.out.println("Correo: " + email);
+            System.out.println("Password: " + password);
 
-            Manager res = mservice.loginManager(c,p);
+            Manager res = mservice.loginManager(email,password);
 
             System.out.println(res.toString());
             ResponseEntity<Manager> r = new ResponseEntity<Manager>(res, HttpStatus.OK);
@@ -90,21 +87,17 @@ public class ManagerController {
 
     @ApiOperation(value = "Operation to delete a Manager", response = Boolean.class)
     @ApiImplicitParams({@ApiImplicitParam(name = "email", value = "Manager email"),
-            @ApiImplicitParam(name = "pass", value = "Manager password"),
+            @ApiImplicitParam(name = "password", value = "Manager password"),
             @ApiImplicitParam(name = "passCheck", value = "Manager password confirmation")
     })
     @PostMapping(value = "/deleteManager", produces = "application/json")
     @ResponseBody
-    public Boolean deleteManager(@RequestBody Object u, HttpServletResponse response, BindingResult result){
+    public Boolean deleteManager(@RequestParam("email") String email, @RequestParam("password") String password, @RequestParam("passCheck") String passCheck,  HttpServletResponse response, BindingResult result){
 
         try {
-            LinkedHashMap<String,String> lhm = (LinkedHashMap) u;
 
-            String email = lhm.get("email");
-            String pass = lhm.get("pass");
-            String passCheck = lhm.get("passCheck");
-            Manager m = mservice.getManagerWithPass(email,pass);
-            if(pass == passCheck && m.getPass_manager().equals(String.valueOf(pass.hashCode()))){
+            Manager m = mservice.getManagerWithPass(email,password);
+            if(password == passCheck && m.getPass_manager().equals(String.valueOf(password.hashCode()))){
                 return mservice.deleteManager(m);
             }
             else{
