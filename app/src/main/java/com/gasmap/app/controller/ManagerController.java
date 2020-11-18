@@ -34,7 +34,7 @@ public class ManagerController {
     })
     @PostMapping(value = "/loginManager", produces = "application/json", consumes = "application/json")
     @ResponseBody
-    public ResponseEntity<Manager> login(@RequestParam("email") String email, @RequestParam("password") String password, HttpServletResponse response, BindingResult result){
+    public ResponseEntity<Manager> login(@RequestParam("email") String email, @RequestParam("password") String password, HttpServletResponse response){
 
         try {
 
