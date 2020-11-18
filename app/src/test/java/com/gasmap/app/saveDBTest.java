@@ -192,6 +192,19 @@ public class saveDBTest {
         }
     }
 
+    @Test
+    public void TestById(){
+        try{
+            int id_gas = 2;
+            Gas g2 = service.getById(id_gas);
+            assertEquals(2, g2.getId_gas());
+            assertEquals("Second", g2.getName_gas());
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
     @After
     public void deleteData(){
         for (Gas gas : g){

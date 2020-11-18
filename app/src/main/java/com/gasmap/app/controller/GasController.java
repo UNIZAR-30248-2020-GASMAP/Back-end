@@ -56,6 +56,21 @@ public class GasController {
         return null;
     }
 
+    @ApiOperation(value = "Get Gas by id", response = Gas[].class)
+    @GetMapping(value = "/listById", produces = "application/json")
+    @ResponseBody
+    public Gas listById(@RequestParam("id_gas") Integer id_gas,  HttpServletResponse response){
+        try {
+
+            Gas g = gasService.getById(id_gas);
+
+            return g;
+        }catch(Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
 
     @ApiOperation(value = "Updates a certain Fuel's price", response = String.class)
     @PostMapping(value = "/updatePrice", produces = "application/json")
