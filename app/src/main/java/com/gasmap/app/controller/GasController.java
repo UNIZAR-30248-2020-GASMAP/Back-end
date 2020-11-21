@@ -1,7 +1,9 @@
 package com.gasmap.app.controller;
 
+import com.gasmap.app.entity.Fuel;
 import com.gasmap.app.entity.Gas;
 import com.gasmap.app.service.GasService;
+import com.gasmap.app.service.fuelService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashSet;
+import java.util.Set;
 
 @RestController
 @Api(value = "Gas' API operations")
@@ -17,6 +21,10 @@ import javax.servlet.http.HttpServletResponse;
 public class GasController {
     @Autowired
     GasService gasService;
+
+    @Autowired
+    fuelService fuelService;
+
 
     @ApiOperation(value = "Get all Gas in the app", response = Gas[].class)
     @GetMapping(value = "/listAllGas", produces = "application/json")
@@ -85,5 +93,56 @@ public class GasController {
             e.printStackTrace();
         }
         return new ResponseEntity<String>("No se ha podido resolver la peticion", HttpStatus.BAD_REQUEST);
+    }
+
+
+
+    @ApiOperation(value = "Adds a Test data Gas", response = Boolean.class)
+    @GetMapping(value = "/addGasTest", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<Boolean> addGasTest(HttpServletResponse response){
+        Gas g;
+        Fuel f1;
+        Fuel f2;
+        Set<Fuel> set = new HashSet<>(0);
+        Set<String> services = new HashSet<>(0);
+        try{
+            f1 = new Fuel();
+            f1.setPrice_fuel(1.0);
+            f1.setId_fuel("Fuel1");
+            f1.setId_gas(1000);
+
+            f2 = new Fuel();
+            f2.setPrice_fuel(2.0);
+            f2.setId_fuel("Fuel2");
+            f2.setId_gas(1000);
+
+            fuelService.addFuel(f1);
+            fuelService.addFuel(f2);
+
+            set.add(f1);
+            set.add(f2);
+
+            services.add("Service1");
+            services.add("Service2");
+            services.add("Service3");
+
+            g = new Gas();
+            g.setId_gas(1000);
+            g.setLatitude_gas(41.632936);
+            g.setLongitude_gas(0.918802);
+            g.setStreet_gas("Test street");
+            g.setName_gas("Test name");
+            g.setFuels_gas(set);
+            g.setServices_gas(services);
+
+            g = gasService.addGasTest(g);
+            if(g != null){
+                return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
     }
 }

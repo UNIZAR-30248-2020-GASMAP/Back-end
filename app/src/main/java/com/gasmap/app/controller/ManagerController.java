@@ -85,6 +85,25 @@ public class ManagerController {
         return null;
     }*/
 
+
+    @ApiOperation(value = "Get all Managers in the app", response = Manager[].class)
+    @GetMapping(value = "/listAllMan", produces = "application/json")
+    @ResponseBody
+    public Manager[] listAllMan(HttpServletResponse response){
+        try {
+            Manager[] array = mservice.getAll();
+
+            for (Manager man: array) {
+                System.out.println(man.toString());
+            }
+            return array;
+        }catch(Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
+
     @ApiOperation(value = "Operation to delete a Manager", response = Boolean.class)
     @ApiImplicitParams({@ApiImplicitParam(name = "email", value = "Manager email"),
             @ApiImplicitParam(name = "password", value = "Manager password"),
@@ -111,7 +130,4 @@ public class ManagerController {
         }
         return false;
     }
-
-
-
 }

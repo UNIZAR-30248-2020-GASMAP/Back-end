@@ -16,7 +16,9 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public Manager addManager(Manager m){
         try {
+            System.out.println("Manager pass: " + m.getPass_manager());
             m.setPass_manager(String.valueOf(m.getPass_manager().hashCode()));
+            System.out.println("Manager pass hash: " + m.getPass_manager());
             return repository.save(m);
         }catch(Exception e) {
             System.out.println(e);
@@ -30,6 +32,16 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
+    public Manager[] getAll() {
+        try{
+            return repository.getAllManagers();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
     public Manager getManagerWithPass(String email, String pass){return repository.findByEmailAndPass(email,pass);}
 
     @Override
@@ -39,6 +51,14 @@ public class ManagerServiceImpl implements ManagerService {
                 return null;
             }
             Manager m = repository.findByEmail(email);
+            if(m == null){
+               System.out.println("Error, no se ha encontrado Manager");
+            }
+            System.out.println("Email Manager: " + m.getEmail());
+            System.out.println("Pass Manager: " + m.getPass_manager());
+            System.out.println("Email parameter: " + email);
+            System.out.println("Pass: " + pass);
+            System.out.println("Hashed pass: " + pass.hashCode());
             if(m.getPass_manager().equals(String.valueOf(pass.hashCode()))){
                 return m;
             }

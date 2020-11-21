@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 public interface ManagerService {
     public Manager addManager(Manager m);
     public Manager getManager(String m);
+    public Manager[] getAll();
 
     Manager getManagerWithPass(String email, String pass);
 
