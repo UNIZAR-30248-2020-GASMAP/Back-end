@@ -28,6 +28,10 @@ public class Gas implements Serializable {
     @Column(name = "longitude_gas", nullable = false, length = 50)
     double longitude_gas;
 
+    //Gas' time table
+    @Column(name = "time_gas", nullable = false, length = 200)
+    String time_gas;
+
     //List of services this gas provides
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> services_gas = new HashSet<String>(0);
@@ -98,12 +102,13 @@ public class Gas implements Serializable {
         this.manager = manager;
     }
 
-    public Gas(Integer id_gas, String name_gas, String street_gas, double latitude_gas, double longitude_gas, Set<String> services_gas, Set<Fuel> fuels_gas, Manager manager) {
+    public Gas(Integer id_gas, String name_gas, String street_gas, double latitude_gas, double longitude_gas, String time_gas, Set<String> services_gas, Set<Fuel> fuels_gas, Manager manager) {
         this.id_gas = id_gas;
         this.name_gas = name_gas;
         this.street_gas = street_gas;
         this.latitude_gas = latitude_gas;
         this.longitude_gas = longitude_gas;
+        this.time_gas = time_gas;
         this.services_gas = services_gas;
         this.fuels_gas = fuels_gas;
         this.manager = manager;
@@ -122,6 +127,8 @@ public class Gas implements Serializable {
     public double getLatitude_gas(){ return latitude_gas; }
 
     public double getLongitude_gas(){ return longitude_gas; }
+
+    public String getTime_gas(){ return time_gas; }
 
     public Set<String> getServices_gas() {
         return services_gas;
@@ -147,6 +154,8 @@ public class Gas implements Serializable {
 
     public void setLongitude_gas(double longitude_gas){ this.longitude_gas = longitude_gas; }
 
+    public void setTime_gas(String time_gas){ this.time_gas = time_gas; }
+
     public void setServices_gas(Set<String> services_gas) {
         this.services_gas = services_gas;
     }
@@ -167,6 +176,7 @@ public class Gas implements Serializable {
                 street_gas.equals(gas.street_gas) &&
                 latitude_gas == gas.latitude_gas &&
                 longitude_gas == gas.longitude_gas &&
+                time_gas == gas.time_gas &&
                 Objects.equals(services_gas, gas.services_gas) &&
                 Objects.equals(fuels_gas, gas.fuels_gas) &&
                 Objects.equals(manager, gas.manager);
@@ -197,6 +207,7 @@ public class Gas implements Serializable {
                 ", street_gas='" + street_gas +
                 "\', latitude_gas="+ latitude_gas +
                 ", longitude_gas=" + longitude_gas +
+                ", time_gas=" + time_gas +
                  "," + stringServices +
                 "," + stringFuels +
                 '}';

@@ -20,6 +20,10 @@ public interface GasService {
 
     public String updateFuelDepenInjection(Double lat, Double lon, Double price, String fuel, LocalDate ld);
 
+    public String updateTime(int id, String new_time);
+    public String updateName(int id, String new_name);
+    public String updateServices(int id, String[] servicesArray);
+
     public Gas getByStreet(String street);
     public Gas getByLatAndLon(double lat, double lon);
 }

@@ -44,6 +44,7 @@ public class saveDBTest {
 
         String name;
         String street;
+        String time;
         Set<Fuel> fuels = new HashSet<Fuel>(0);
         Set<String> services = new HashSet<String>(0);
         double lon;
@@ -53,10 +54,18 @@ public class saveDBTest {
         lat = 41.786183;
         lon = -1.219913;
         name = "First";
+        time ="Mon: 7:00-23:00\\n" +
+                "Tue: 7:00-23:00\\n" +
+                "Wen: 7:00-23:00\\n" +
+                "Thu: 7:00-23:00\\n" +
+                "Fri: 7:00-23:00\\n" +
+                "Sat: 6:00-00:00\\n" +
+                "Sun: 6:00-00:00\\n";
         g[0].setName_gas(name);
         street = "Av First n1";
         g[0].setStreet_gas(street);
         g[0].setServices_gas(services);
+        g[0].setTime_gas(time);
         g[0].setLongitude_gas(lon);
         g[0].setLatitude_gas(lat);
 
@@ -69,6 +78,8 @@ public class saveDBTest {
         g[1].setName_gas(name);
         street = "Av Second n2";
         g[1].setStreet_gas(street);
+
+        g[1].setTime_gas(time);
 //        g2.fuels_gas.put("Fuel1",1.1);
         g[1] = service.addGas(g[1]);
         f[0] = new Fuel("Fuel1",1.1, g[1].getId_gas());
@@ -90,6 +101,7 @@ public class saveDBTest {
         g[2].setName_gas(name);
         street = "Av Third n3";
         g[2].setStreet_gas(street);
+        g[2].setTime_gas(time);
         g[2] = service.addGas(g[2]);
         f[1] = new Fuel("Fuel2",2.2, g[2].getId_gas());
         fservice.addFuel(f[1]);
@@ -109,6 +121,7 @@ public class saveDBTest {
         g[3].setName_gas(name);
         street = "Av Fourth n4";
         g[3].setStreet_gas(street);
+        g[3].setTime_gas(time);
         g[3] = service.addGas(g[3]);
         f[2] = new Fuel("Fuel3",3.3, g[3].getId_gas());
         fservice.addFuel(f[2]);
@@ -116,6 +129,7 @@ public class saveDBTest {
         g[3].setFuels_gas(fuels);
         services.add("Service3");
         g[3].setServices_gas(services);
+        g[3].setTime_gas(time);
         g[3].setLongitude_gas(lon);
         g[3].setLatitude_gas(lat);
 
@@ -129,6 +143,7 @@ public class saveDBTest {
         g[4].setName_gas(name);
         street = "Av Fifth n5";
         g[4].setStreet_gas(street);
+        g[4].setTime_gas(time);
         g[4] = service.addGas(g[4]);
         f[3] = new Fuel("Fuel4",4.4, g[4].getId_gas());
         fservice.addFuel(f[3]);
@@ -136,6 +151,7 @@ public class saveDBTest {
         g[4].setFuels_gas(fuels);
         services.add("Service4");
         g[4].setServices_gas(services);
+        g[4].setTime_gas(time);
         g[4].setLongitude_gas(lon);
         g[4].setLatitude_gas(lat);
 
@@ -205,6 +221,46 @@ public class saveDBTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void TesUpdateGas(){
+        int id_gas = 2;
+        String new_name = "New Name";
+        String new_time = "Mon: 8:00-23:00\\n" +
+                "Tue: 7:00-23:00\\n" +
+                "Wen: 8:00-23:00\\n" +
+                "Thu: 9:00-23:00\\n" +
+                "Fri: 10:00-23:00\\n" +
+                "Sat: 6:00-00:00\\n" +
+                "Sun: 6:00-00:00\\n";
+
+        String[] new_services = {"serviceA", "serviceB"};
+        Set<String> expected = new HashSet<String>();
+
+        expected.add("Service1");
+        expected.add(new_services[0]);
+        expected.add(new_services[1]);
+
+        service.updateName(id_gas, new_name);
+        assertEquals(new_name, service.getById(id_gas).getName_gas());
+
+        service.updateTime(id_gas, new_time);
+        assertEquals(new_time, service.getById(id_gas).getTime_gas());
+
+        service.updateServices(id_gas, new_services);
+        assertEquals(expected, service.getById(id_gas).getServices_gas());
+
+        // It should not add this service as its already in the set
+        service.updateServices(id_gas, new String[]{"Service1"});
+        assertEquals(expected, service.getById(id_gas).getServices_gas());
+
+
+
+
+
+
+    }
+
     @After
     public void deleteData(){
         for (Gas gas : g){

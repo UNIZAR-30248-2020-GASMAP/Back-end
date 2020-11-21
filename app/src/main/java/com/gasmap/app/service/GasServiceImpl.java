@@ -144,4 +144,44 @@ public class GasServiceImpl implements GasService {
         return "Cannot resolve operation";
     }
 
+    @Override
+    public String updateTime(int id, String new_time) {
+        try{
+            Gas g = repository.findById(id);
+            g.setTime_gas(new_time);
+            repository.save(g);
+            return "Changed correctly";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return "Cannot resolve operation";
+    }
+
+    @Override
+    public String updateName(int id, String new_name) {
+        try{
+            Gas g = repository.findById(id);
+            g.setName_gas(new_name);
+            repository.save(g);
+            return "Changed correctly";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return "Cannot resolve operation";
+    }
+
+    @Override
+    public String updateServices(int id, String[] servicesArray) {
+        try{
+            Gas g = repository.findById(id);
+            for (String s : servicesArray){
+                g.addService(s);
+            }
+            repository.save(g);
+            return "Changed correctly";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return "Cannot resolve operation";
+    }
 }

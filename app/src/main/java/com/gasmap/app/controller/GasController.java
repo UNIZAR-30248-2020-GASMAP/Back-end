@@ -86,4 +86,62 @@ public class GasController {
         }
         return new ResponseEntity<String>("No se ha podido resolver la peticion", HttpStatus.BAD_REQUEST);
     }
+
+    @ApiOperation(value = "Updates all gas info", response = String.class)
+    @PostMapping(value = "/updateGas", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<String> updateGas(@RequestParam("gas") Gas g,
+                                              HttpServletResponse response){
+        try{
+            Gas res = gasService.updateGas(g);
+            return new ResponseEntity<String>(res.toString(), HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<String>("Gas could not be updated", HttpStatus.BAD_REQUEST);
+    }
+
+    @ApiOperation(value = "Updates gas name", response = String.class)
+    @PostMapping(value = "/updateGasName", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<String> updateGasName(@RequestParam("id_gas") int id_gas, @RequestParam("new_name") String new_name,
+                                              HttpServletResponse response){
+        try{
+            String res = gasService.updateName(id_gas,new_name);
+            return new ResponseEntity<String>(res, HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<String>("Gas could not be updated", HttpStatus.BAD_REQUEST);
+    }
+
+    @ApiOperation(value = "Updates gas time table", response = String.class)
+    @PostMapping(value = "/updateGasTime", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<String> updateGasTime(@RequestParam("id_gas") int id_gas, @RequestParam("new_time") String new_time,
+                                                HttpServletResponse response){
+        try{
+            String res = gasService.updateTime(id_gas,new_time);
+            return new ResponseEntity<String>(res, HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<String>("Gas could not be updated", HttpStatus.BAD_REQUEST);
+    }
+
+    @ApiOperation(value = "Updates gas services", response = String.class)
+    @PostMapping(value = "/updateGasServices", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<String> updateGasServices(@RequestParam("id_gas") int id_gas, @RequestParam("new_services") String[] new_services,
+                                                HttpServletResponse response){
+        try{
+            String res = gasService.updateServices(id_gas,new_services);
+            return new ResponseEntity<String>(res, HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<String>("Gas could not be updated", HttpStatus.BAD_REQUEST);
+    }
+
+
 }
