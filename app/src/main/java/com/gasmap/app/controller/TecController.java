@@ -129,7 +129,7 @@ public class TecController {
         try{
             Manager m = new Manager();
             m.setEmail_manager(man.email_manager);
-            m.setPass_manager(man.email_manager);
+            m.setPass_manager(man.pass_manager);
             m.setName_manager(man.name_manager);
             m.setPhone_manager(Integer.parseInt(man.phone_manager));
 

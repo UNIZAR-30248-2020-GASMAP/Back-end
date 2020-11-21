@@ -10,6 +10,7 @@ public interface GasService {
     public Gas[] getByDistance(double lat2, double lon2) throws Exception;
 
     public Gas addGas(Gas g);
+    public Gas addGasTest(Gas g);
 
     public Gas updateGas(Gas g);
 

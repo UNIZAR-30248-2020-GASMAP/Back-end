@@ -65,6 +65,16 @@ public class GasServiceImpl implements GasService {
     }
 
     @Override
+    public Gas addGasTest(Gas g) {
+        try{
+            return repository.save(g);
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public Gas updateGas(Gas g){
         try{
             return repository.save(g);
