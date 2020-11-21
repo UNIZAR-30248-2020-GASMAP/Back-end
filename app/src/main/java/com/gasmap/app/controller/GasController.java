@@ -162,6 +162,13 @@ public class GasController {
         Fuel f2;
         Set<Fuel> set = new HashSet<>(0);
         Set<String> services = new HashSet<>(0);
+        String new_time = "Mon: 8:00-23:00\\n" +
+                "Tue: 7:00-23:00\\n" +
+                "Wen: 8:00-23:00\\n" +
+                "Thu: 9:00-23:00\\n" +
+                "Fri: 10:00-23:00\\n" +
+                "Sat: 6:00-00:00\\n" +
+                "Sun: 6:00-00:00\\n";
         try{
             f1 = new Fuel();
             f1.setPrice_fuel(1.0);
@@ -191,6 +198,7 @@ public class GasController {
             g.setName_gas("Test name");
             g.setFuels_gas(set);
             g.setServices_gas(services);
+            g.setTime_gas(new_time);
 
             g = gasService.addGasTest(g);
             if(g != null){
