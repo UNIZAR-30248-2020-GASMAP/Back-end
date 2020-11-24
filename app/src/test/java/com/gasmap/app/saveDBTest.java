@@ -237,7 +237,6 @@ public class saveDBTest {
         String[] new_services = {"serviceA", "serviceB"};
         Set<String> expected = new HashSet<String>();
 
-        expected.add("Service1");
         expected.add(new_services[0]);
         expected.add(new_services[1]);
 
@@ -251,8 +250,16 @@ public class saveDBTest {
         assertEquals(expected, service.getById(id_gas).getServices_gas());
 
         // It should not add this service as its already in the set
-        service.updateServices(id_gas, new String[]{"Service1"});
+        service.updateServices(id_gas, new String[]{"serviceA", "serviceB"});
         assertEquals(expected, service.getById(id_gas).getServices_gas());
+
+        // what happens if you remove two of the services already added
+        // it should only have service1 and removed serviceA and serviceB added previously
+        String[] new_services2 = {"service1"};
+        Set<String> expected2 = new HashSet<String>();
+        expected2.add("service1");
+        service.updateServices(id_gas, new_services2);
+        assertEquals(expected2, service.getById(id_gas).getServices_gas());
 
 
 
