@@ -138,7 +138,7 @@ public class GasController {
     }
 
     @ApiOperation(value = "Updates gas services", response = String.class)
-    @PostMapping(value = "/updateGasServices", produces = "application/json")
+    @PostMapping(value = "/updateGasServices")
     @ResponseBody
     public ResponseEntity<String> updateGasServices(@RequestParam("id_gas") int id_gas, @RequestParam("new_services") String[] new_services,
                                                 HttpServletResponse response){

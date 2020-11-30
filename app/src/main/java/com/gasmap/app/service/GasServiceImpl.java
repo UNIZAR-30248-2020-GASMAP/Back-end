@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -186,6 +187,7 @@ public class GasServiceImpl implements GasService {
     public String updateServices(int id, String[] servicesArray) {
         try{
             Gas g = repository.findById(id);
+            /*
             Set<String> missing = g.getServices_gas();
             // get the services that existed previously in gas station and not in the updated services array
             missing.removeAll(Arrays.asList(servicesArray));
@@ -202,11 +204,12 @@ public class GasServiceImpl implements GasService {
             for (String s : servicesArray){
                 g.addService(s);
             }
+            */
 
+            Set<String> newSet = new HashSet<>(0);
+            newSet.addAll(Arrays.asList(servicesArray));
+            g.setServices_gas(newSet);
 
-            //for(String e : expected){
-            //    if()
-            //}
 
 
             repository.save(g);
