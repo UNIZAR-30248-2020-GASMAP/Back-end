@@ -171,15 +171,15 @@ public class Gas implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Gas gas = (Gas) o;
-        return id_gas == gas.id_gas &&
-                Objects.equals(name_gas, gas.name_gas) &&
+        return id_gas.equals(gas.id_gas) &&
+                name_gas.equals(gas.name_gas) &&
                 street_gas.equals(gas.street_gas) &&
                 latitude_gas == gas.latitude_gas &&
                 longitude_gas == gas.longitude_gas &&
-                time_gas == gas.time_gas &&
-                Objects.equals(services_gas, gas.services_gas) &&
-                Objects.equals(fuels_gas, gas.fuels_gas) &&
-                Objects.equals(manager, gas.manager);
+                time_gas.equals(gas.time_gas) &&
+                services_gas.equals(gas.services_gas) &&
+                fuels_gas.equals(gas.fuels_gas) &&
+                manager.equals(gas.manager);
     }
 
     @Override

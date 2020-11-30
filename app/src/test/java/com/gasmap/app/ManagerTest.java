@@ -86,6 +86,7 @@ public class ManagerTest {
 
         m1 = new Manager(manager_email,manager_name,manager_phone,manager_pass,g1);
         g1.setManager(m1);
+        g1.setTime_gas("");
 
         gservice.addGas(g1);
         mservice.addManager(m1);
@@ -116,6 +117,7 @@ public class ManagerTest {
 
         m2 = new Manager(manager_email,manager_name,manager_phone,manager_pass,g2);
         g2.setManager(m2);
+        g2.setTime_gas("");
 
         gservice.addGas(g2);
         mservice.addManager(m2);
