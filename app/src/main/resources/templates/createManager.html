@@ -6,7 +6,7 @@
 <h1>Enter a new Manager's parameters</h1>
 <form action="#" method="post" th:object= "${managerForm}">
     <input placeholder="Email" name="Email" type="email" required="" th:field="${managerForm.email_manager}">
-    <input  placeholder="Password" type="password" class="password" name="Password" required="" th:field="${managerForm.pass_manager}"/>
+    <input  placeholder="Password" type="password" class="password" name="Password" required="" minlength="12" th:field="${managerForm.pass_manager}"/>
     <input  placeholder="Name" name="name" required="" th:field="${managerForm.name_manager}"/>
     <input  placeholder="Phone" name="Phone" required="" th:field="${managerForm.phone_manager}"/>
     <input  placeholder="Gas' ID" name="id_gas" required="" th:field="${managerForm.gas_manager}"/>
