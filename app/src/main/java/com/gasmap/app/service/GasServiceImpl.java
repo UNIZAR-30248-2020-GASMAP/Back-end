@@ -139,6 +139,37 @@ public class GasServiceImpl implements GasService {
         return "Cannot resolve operation";
     }
 
+    @Override
+    public String updateFuel(int id, Double price, String fuel) {
+        try{
+            Gas g = repository.findById(id);
+            if(g == null){
+                return "Gas not found";
+            }
+            Fuel oldFuel = fuel_repository.findFuelByIdAndGas(fuel,g.getId_gas());
+            if(oldFuel == null){
+                return "Fuel not found";
+            }
+            if(price.equals(oldFuel.getPrice_fuel())){
+                return "Changed correctly";
+            }
+            if(price * 0.95 > oldFuel.getPrice_fuel() || price * 1.05 < oldFuel.getPrice_fuel()){
+                return "Cannot change to that price";
+            }
+            LocalDate oFuel = LocalDate.parse(oldFuel.getChange_fuel());
+            if(!oFuel.isBefore(LocalDate.now())){
+                return "Cannot change until tomorrow";
+            }
+            oldFuel.setChange_fuel(LocalDate.now().toString());
+            oldFuel.setPrice_fuel(price);
+            fuel_repository.save(oldFuel);
+            return "Changed correctly";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return "Cannot resolve operation";
+    }
+
 
     @Override
     public String updateFuelDepenInjection(Double lat, Double lon, Double price, String fuel, LocalDate ld) {

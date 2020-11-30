@@ -18,6 +18,7 @@ public interface GasService {
 
     public Gas getById(int i);
     public String updateFuelLonLat(Double lat, Double lon, Double price, String fuel);
+    public String updateFuel(int id, Double price, String fuel);
 
     public String updateFuelDepenInjection(Double lat, Double lon, Double price, String fuel, LocalDate ld);
 

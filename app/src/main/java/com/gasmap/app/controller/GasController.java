@@ -80,7 +80,7 @@ public class GasController {
     }
 
 
-    @ApiOperation(value = "Updates a certain Fuel's price, given Lat and Lon", response = String.class)
+    @ApiOperation(value = "Updates a certain Fuel's price, given Gas' Lat and Lon", response = String.class)
     @PostMapping(value = "/updatePriceLatLon", produces = "application/json")
     @ResponseBody
     public ResponseEntity<String> updatePriceLatLon(@RequestParam("lat") double lat, @RequestParam("lon") double lon,
@@ -92,21 +92,21 @@ public class GasController {
         }catch(Exception e){
             e.printStackTrace();
         }
-        return new ResponseEntity<String>("No se ha podido resolver la peticion", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<String>("Cannot resolve operation", HttpStatus.BAD_REQUEST);
     }
 
-    @ApiOperation(value = "Updates a certain Fuel's price, given ID", response = String.class)
+    @ApiOperation(value = "Updates a certain Fuel's price, given Gas' ID", response = String.class)
     @PostMapping(value = "/updatePrice", produces = "application/json")
     @ResponseBody
     public ResponseEntity<String> updatePrice(@RequestParam("id_gas") int id_gas, @RequestParam("price") double price,
                                               @RequestParam("fuel") String fuel, HttpServletResponse response){
         try{
-            //String res = gasService.updateFuel(lat, lon, price, fuel);
-            //return new ResponseEntity<String>(res, HttpStatus.OK);
+            String res = gasService.updateFuel(id_gas, price, fuel);
+            return new ResponseEntity<String>(res, HttpStatus.OK);
         }catch(Exception e){
             e.printStackTrace();
         }
-        return new ResponseEntity<String>("No se ha podido resolver la peticion", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<String>("Cannot resolve operation", HttpStatus.BAD_REQUEST);
     }
     
     @ApiOperation(value = "Updates all gas info", response = String.class)
