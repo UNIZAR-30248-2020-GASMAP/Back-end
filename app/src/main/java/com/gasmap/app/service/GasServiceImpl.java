@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Set;
 
 @Service
 public class GasServiceImpl implements GasService {
@@ -184,9 +186,29 @@ public class GasServiceImpl implements GasService {
     public String updateServices(int id, String[] servicesArray) {
         try{
             Gas g = repository.findById(id);
+            Set<String> missing = g.getServices_gas();
+            // get the services that existed previously in gas station and not in the updated services array
+            missing.removeAll(Arrays.asList(servicesArray));
+            //System.out.println("MISSING: " + missing.toString());
+            Set<String> expected = g.getServices_gas();
+
+            //System.out.println("EXPECTED ANTES DE ACTUALIZAR: " + expected.toString());
+
+            //remove the services from Expected set that do not exist in the updated services
+            expected.removeAll(missing);
+            //System.out.println("EXPECTED DESPUES DE ACTUALIZAR: " + expected.toString());
+            // add the new services
+            g.setServices_gas(expected);
             for (String s : servicesArray){
                 g.addService(s);
             }
+
+
+            //for(String e : expected){
+            //    if()
+            //}
+
+
             repository.save(g);
             return "Changed correctly";
         }catch(Exception e){
