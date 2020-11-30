@@ -92,7 +92,7 @@ public class ManagerController {
     public Manager[] listAllMan(HttpServletResponse response){
         try {
             Manager[] array = mservice.getAll();
-
+            System.out.println(array.length);
             for (Manager man: array) {
                 System.out.println(man.toString());
             }

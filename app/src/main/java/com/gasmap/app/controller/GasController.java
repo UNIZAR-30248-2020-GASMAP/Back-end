@@ -170,6 +170,7 @@ public class GasController {
                 "Sat: 6:00-00:00\\n" +
                 "Sun: 6:00-00:00\\n";
         try{
+
             f1 = new Fuel();
             f1.setPrice_fuel(1.0);
             f1.setId_fuel("Fuel1");
@@ -186,20 +187,27 @@ public class GasController {
             set.add(f1);
             set.add(f2);
 
-            services.add("Service1");
-            services.add("Service2");
-            services.add("Service3");
+            services.add("tarjeta");
+            services.add("agua");
+            services.add("aire");
+            services.add("minusvalidos");
+            services.add("duchas");
+            services.add("cama");
+            services.add("restaurante");
+            services.add("taller");
+
 
             g = new Gas();
             g.setId_gas(1000);
             g.setLatitude_gas(41.632936);
-            g.setLongitude_gas(0.918802);
+            g.setLongitude_gas(-0.918802);
             g.setStreet_gas("Test street");
             g.setName_gas("Test name");
             g.setFuels_gas(set);
             g.setServices_gas(services);
             g.setTime_gas(new_time);
 
+            gasService.deleteGas(g);
             g = gasService.addGasTest(g);
             if(g != null){
                 return new ResponseEntity<Boolean>(true, HttpStatus.OK);
