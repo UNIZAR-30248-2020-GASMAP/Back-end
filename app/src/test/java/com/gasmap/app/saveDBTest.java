@@ -268,6 +268,21 @@ public class saveDBTest {
 
     }
 
+    @Test
+    public void testSplit(){
+        String new_services = "[\"duchas\",\"taller\"]";
+        System.out.println("Services: " + new_services);
+        String[] arrayString = new_services.split(",");
+        for(int i=0; i<arrayString.length; i++){
+            arrayString[i] = arrayString[i].replace("[","");
+            arrayString[i] = arrayString[i].replace("]","");
+            arrayString[i] = arrayString[i].replace("\"","");
+        }
+        for(String s : arrayString){
+            System.out.println("String: " + s);
+        }
+    }
+
     @After
     public void deleteData(){
         for (Gas gas : g){

@@ -58,34 +58,34 @@ public class updateFuelTest {
     public void Test1(){
 
 
-        String response = service.updateFuel(g1.getLatitude_gas(),g1.getLongitude_gas(),null,null);
+        String response = service.updateFuelLonLat(g1.getLatitude_gas(),g1.getLongitude_gas(),null,null);
 
         //It won't work, fuel does not exist
         assertEquals("Fuel not found", response);
 
         //Change with the same price
-        response = service.updateFuel(g1.getLatitude_gas(),g1.getLongitude_gas(),f.getPrice_fuel(),f.getId_fuel());
+        response = service.updateFuelLonLat(g1.getLatitude_gas(),g1.getLongitude_gas(),f.getPrice_fuel(),f.getId_fuel());
 
         assertEquals("Changed correctly", response);
 
         f = new Fuel("Fuel1",0.1,g1.getId_gas());
 
         //It won't work, price is too low
-        response = service.updateFuel(g1.getLatitude_gas(),g1.getLongitude_gas(),f.getPrice_fuel(),f.getId_fuel());
+        response = service.updateFuelLonLat(g1.getLatitude_gas(),g1.getLongitude_gas(),f.getPrice_fuel(),f.getId_fuel());
 
         assertEquals("Cannot change to that price", response);
 
         f = new Fuel("Fuel1",2.0,g1.getId_gas());
 
         //It won't work, price is too high
-        response = service.updateFuel(g1.getLatitude_gas(),g1.getLongitude_gas(),f.getPrice_fuel(),f.getId_fuel());
+        response = service.updateFuelLonLat(g1.getLatitude_gas(),g1.getLongitude_gas(),f.getPrice_fuel(),f.getId_fuel());
 
         assertEquals("Cannot change to that price", response);
 
         f = new Fuel("Fuel1",1.05,g1.getId_gas());
 
         //It won't work, haven't passed 1 day since last time it was changed
-        response = service.updateFuel(g1.getLatitude_gas(),g1.getLongitude_gas(),f.getPrice_fuel(),f.getId_fuel());
+        response = service.updateFuelLonLat(g1.getLatitude_gas(),g1.getLongitude_gas(),f.getPrice_fuel(),f.getId_fuel());
 
         assertEquals("Cannot change until tomorrow", response);
 

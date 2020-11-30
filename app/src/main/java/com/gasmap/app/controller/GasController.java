@@ -80,15 +80,29 @@ public class GasController {
     }
 
 
-    @ApiOperation(value = "Updates a certain Fuel's price", response = String.class)
-    @PostMapping(value = "/updatePrice", produces = "application/json")
+    @ApiOperation(value = "Updates a certain Fuel's price, given Lat and Lon", response = String.class)
+    @PostMapping(value = "/updatePriceLatLon", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<String> updatePrice(@RequestParam("lat") double lat, @RequestParam("lon") double lon,
+    public ResponseEntity<String> updatePriceLatLon(@RequestParam("lat") double lat, @RequestParam("lon") double lon,
                                                @RequestParam("price") double price, @RequestParam("fuel") String fuel,
                                                HttpServletResponse response){
         try{
-            String res = gasService.updateFuel(lat, lon, price, fuel);
+            String res = gasService.updateFuelLonLat(lat, lon, price, fuel);
             return new ResponseEntity<String>(res, HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<String>("No se ha podido resolver la peticion", HttpStatus.BAD_REQUEST);
+    }
+
+    @ApiOperation(value = "Updates a certain Fuel's price, given ID", response = String.class)
+    @PostMapping(value = "/updatePrice", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<String> updatePrice(@RequestParam("id_gas") int id_gas, @RequestParam("price") double price,
+                                              @RequestParam("fuel") String fuel, HttpServletResponse response){
+        try{
+            //String res = gasService.updateFuel(lat, lon, price, fuel);
+            //return new ResponseEntity<String>(res, HttpStatus.OK);
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -140,15 +154,39 @@ public class GasController {
     @ApiOperation(value = "Updates gas services", response = String.class)
     @PostMapping(value = "/updateGasServices")
     @ResponseBody
-    public ResponseEntity<String> updateGasServices(@RequestParam("id_gas") int id_gas, @RequestParam("new_services") String[] new_services,
+    public ResponseEntity<String> updateGasServices(@RequestParam("id_gas") int id_gas, @RequestParam("new_services") String new_services,
                                                 HttpServletResponse response){
         try{
-            String res = gasService.updateServices(id_gas,new_services);
+            System.out.println("Services: " + new_services);
+            String[] arrayString = new_services.split(",");
+            for(int i=0; i<arrayString.length; i++){
+                arrayString[i] = arrayString[i].replace("[","");
+                arrayString[i] = arrayString[i].replace("]","");
+                arrayString[i] = arrayString[i].replace("\"","");
+            }
+            for(String s : arrayString){
+                System.out.println("String: " + s);
+            }
+            String res = gasService.updateServices(id_gas,arrayString);
             return new ResponseEntity<String>(res, HttpStatus.OK);
         }catch(Exception e){
             e.printStackTrace();
         }
         return new ResponseEntity<String>("Gas could not be updated", HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ApiOperation(value = "Give all services", response = String[].class)
+    @GetMapping(value = "/allServices", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<String[]> allServices(HttpServletResponse response){
+        try{
+            String[] res = gasService.allServices();
+            return new ResponseEntity<String[]>(res, HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
     
 
@@ -174,12 +212,12 @@ public class GasController {
             f1 = new Fuel();
             f1.setPrice_fuel(1.0);
             f1.setId_fuel("Fuel1");
-            f1.setId_gas(1000);
+            f1.setId_gas(1);
 
             f2 = new Fuel();
             f2.setPrice_fuel(2.0);
             f2.setId_fuel("Fuel2");
-            f2.setId_gas(1000);
+            f2.setId_gas(1);
 
             fuelService.addFuel(f1);
             fuelService.addFuel(f2);
@@ -198,11 +236,11 @@ public class GasController {
 
 
             g = new Gas();
-            g.setId_gas(1000);
-            g.setLatitude_gas(41.632936);
-            g.setLongitude_gas(-0.918802);
-            g.setStreet_gas("Test street");
-            g.setName_gas("Test name");
+            g.setId_gas(1);
+            g.setLatitude_gas(41.651828650165434);
+            g.setLongitude_gas(-0.8810700203771564);
+            g.setStreet_gas("Gas nº0");
+            g.setName_gas("Name nº0");
             g.setFuels_gas(set);
             g.setServices_gas(services);
             g.setTime_gas(new_time);

@@ -56,6 +56,17 @@ public class GasServiceImpl implements GasService {
     }
 
     @Override
+    public String[] allServices() {
+        try{
+            Gas g = repository.findById(1);
+            return g.getServices_gas().toArray(new String[0]);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
     public Gas addGas(Gas g){
         try{
             long n = repository.count();
@@ -101,7 +112,7 @@ public class GasServiceImpl implements GasService {
 
 
     @Override
-    public String updateFuel(Double lat, Double lon, Double price, String fuel) {
+    public String updateFuelLonLat(Double lat, Double lon, Double price, String fuel) {
         try{
             Gas g = repository.findByLatLon(lat,lon);
             Fuel oldFuel = fuel_repository.findFuelByIdAndGas(fuel,g.getId_gas());
