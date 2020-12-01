@@ -234,7 +234,7 @@ public class GasController {
         Set<String> services = new HashSet<>(0);
         String new_time = "Mon: 08:00-23:00\\n" +
                 "Tue: 07:00-23:00\\n" +
-                "Wen: 08:00-23:00\\n" +
+                "Wed: 08:00-23:00\\n" +
                 "Thu: 09:00-23:00\\n" +
                 "Fri: 10:00-23:00\\n" +
                 "Sat: 06:00-00:00\\n" +

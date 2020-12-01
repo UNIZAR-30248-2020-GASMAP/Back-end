@@ -37,7 +37,6 @@ public class ManagerController {
     public ResponseEntity<Manager> login(@RequestParam("email") String email, @RequestParam("password") String password, HttpServletResponse response){
 
         try {
-
             System.out.println("Correo: " + email);
             System.out.println("Password: " + password);
 

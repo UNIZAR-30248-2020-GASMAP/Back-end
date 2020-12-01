@@ -269,6 +269,7 @@ public class saveDBTest {
     }
 
     @Test
+    @Ignore
     public void testSplit(){
         String new_services = "[\"duchas\",\"taller\"]";
         System.out.println("Services: " + new_services);

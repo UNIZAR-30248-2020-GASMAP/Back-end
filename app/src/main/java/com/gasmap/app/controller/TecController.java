@@ -98,7 +98,7 @@ public class TecController {
 
             String new_time = "Mon: 00:00-00:00\\n" +
                     "Tue: 00:00-00:00\\n" +
-                    "Wen: 00:00-00:00\\n" +
+                    "Wed: 00:00-00:00\\n" +
                     "Thu: 00:00-00:00\\n" +
                     "Fri: 00:00-00:00\\n" +
                     "Sat: 00:00-00:00\\n" +

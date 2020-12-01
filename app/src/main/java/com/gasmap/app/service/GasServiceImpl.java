@@ -197,6 +197,9 @@ public class GasServiceImpl implements GasService {
         try{
             Gas g = repository.findById(id);
             Fuel oldFuel = fuel_repository.findFuelByIdAndGas(fuel,g.getId_gas());
+            if(oldFuel == null){
+                return "Fuel not found";
+            }
             oldFuel.addNewPrice(price);
             oldFuel.setChange_fuel(LocalDate.now().toString());
             oldFuel.setPrice_fuel(price);
@@ -206,7 +209,7 @@ public class GasServiceImpl implements GasService {
         }catch(Exception e){
             e.printStackTrace();
         }
-        return "Could not change it";
+        return "Cannot resolve operation";
     }
 
 
