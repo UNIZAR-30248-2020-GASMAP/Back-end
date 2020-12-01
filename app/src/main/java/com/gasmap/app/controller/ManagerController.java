@@ -53,37 +53,7 @@ public class ManagerController {
         System.out.println(manager.getEmail());
         return new ResponseEntity<Manager>(HttpStatus.BAD_REQUEST);
     }
-    /*
-    @ApiOperation(value = "Operation to register a new Manager", response = Manager.class)
-    @ApiImplicitParams({@ApiImplicitParam(name = "email", value = "Manager email"),
-            @ApiImplicitParam(name = "name", value = "Manager's full name"),
-            @ApiImplicitParam(name = "phone", value = "Manager's phone number"),
-            @ApiImplicitParam(name = "password", value = "Manager password"),
 
-    })
-
-    @PostMapping(value = "/registerManager", produces = "application/json")
-    @ResponseBody
-    public Manager register(@RequestParam("email") String email, @RequestParam("name") String name,
-                             @RequestParam("phone") int phone, @RequestParam("pass") String pass,
-                            @RequestParam("gas_id") String gas_id,
-                             HttpServletResponse response){
-        System.out.println("Entro en el register");
-        try {
-            System.out.println("name: " + name);
-            System.out.println("email: " + email);
-            System.out.println("password: " + pass);
-            System.out.println("phone: " + phone);
-
-            Gas gas = gservice.getById(Integer.parseInt(gas_id));
-            Manager manager = new Manager(email, name, phone, pass, gas);                  //HELP WANTED-------------------------------------------------!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            System.out.println(manager.toString());
-            return mservice.addManager(manager);
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }*/
 
 
     @ApiOperation(value = "Get all Managers in the app", response = Manager[].class)
@@ -116,7 +86,7 @@ public class ManagerController {
         try {
 
             Manager m = mservice.getManagerWithPass(email,password);
-            if(password == passCheck && m.getPass_manager().equals(String.valueOf(password.hashCode()))){
+            if(password.equals(passCheck) && m.getPass_manager().equals(String.valueOf(password.hashCode()))){
                 return mservice.deleteManager(m);
             }
             else{
@@ -124,10 +94,30 @@ public class ManagerController {
                 return false;
             }
 
-
         }catch(Exception e) {
             System.out.println(e);
         }
         return false;
     }
+
+
+
+    @ApiOperation(value = "Updates a certain Fuel's price, given Gas' ID, without any condition", response = String.class)
+    @PostMapping(value = "/updatePriceMan", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<String> updatePriceMan(@RequestParam("id_gas") int id_gas, @RequestParam("price") double price,
+                                              @RequestParam("fuel") String fuel, HttpServletResponse response){
+        try{
+            String res = gservice.updateFuelMan(id_gas, price, fuel);
+            return new ResponseEntity<String>(res, HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<String>("Cannot resolve operation", HttpStatus.BAD_REQUEST);
+    }
+
+
+
+
+
 }

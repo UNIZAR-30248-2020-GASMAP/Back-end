@@ -21,6 +21,7 @@ public interface GasService {
     public String addFuelToGas(int id, Double price, String fuel);
     public String updateFuelLonLat(Double lat, Double lon, Double price, String fuel);
     public String updateFuel(int id, Double price, String fuel);
+    public String updateFuelMan(int id, Double price, String fuel);
 
     public String updateFuelDepenInjection(Double lat, Double lon, Double price, String fuel, LocalDate ld);
 

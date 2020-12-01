@@ -232,13 +232,13 @@ public class GasController {
         Fuel f2;
         Set<Fuel> set = new HashSet<>(0);
         Set<String> services = new HashSet<>(0);
-        String new_time = "Mon: 8:00-23:00\\n" +
-                "Tue: 7:00-23:00\\n" +
-                "Wen: 8:00-23:00\\n" +
-                "Thu: 9:00-23:00\\n" +
+        String new_time = "Mon: 08:00-23:00\\n" +
+                "Tue: 07:00-23:00\\n" +
+                "Wen: 08:00-23:00\\n" +
+                "Thu: 09:00-23:00\\n" +
                 "Fri: 10:00-23:00\\n" +
-                "Sat: 6:00-00:00\\n" +
-                "Sun: 6:00-00:00\\n";
+                "Sat: 06:00-00:00\\n" +
+                "Sun: 06:00-00:00\\n";
         try{
 
             f1 = new Fuel();

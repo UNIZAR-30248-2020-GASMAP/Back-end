@@ -96,13 +96,21 @@ public class TecController {
 
         try{
 
+            String new_time = "Mon: 00:00-00:00\\n" +
+                    "Tue: 00:00-00:00\\n" +
+                    "Wen: 00:00-00:00\\n" +
+                    "Thu: 00:00-00:00\\n" +
+                    "Fri: 00:00-00:00\\n" +
+                    "Sat: 00:00-00:00\\n" +
+                    "Sun: 00:00-00:00\\n";
+
             Gas g = new Gas();
             g.setName_gas(gas.getName());
             g.setStreet_gas(gas.getStreet());
             g.setLongitude_gas(Double.parseDouble(gas.getLon()));
             g.setLatitude_gas(Double.parseDouble(gas.getLat()));
             g.setId_gas(Integer.parseInt(gas.getId()));
-            g.setTime_gas("");
+            g.setTime_gas(new_time);
             g = gasService.addGas(g);
 
             System.out.println(g.toString());
