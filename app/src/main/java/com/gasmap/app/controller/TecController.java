@@ -102,6 +102,7 @@ public class TecController {
             g.setLongitude_gas(Double.parseDouble(gas.getLon()));
             g.setLatitude_gas(Double.parseDouble(gas.getLat()));
             g.setId_gas(Integer.parseInt(gas.getId()));
+            g.setTime_gas("");
             g = gasService.addGas(g);
 
             System.out.println(g.toString());
