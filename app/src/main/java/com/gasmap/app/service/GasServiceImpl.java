@@ -4,6 +4,8 @@ import com.gasmap.app.entity.Gas;
 import com.gasmap.app.entity.Fuel;
 import com.gasmap.app.repository.FuelRepository;
 import com.gasmap.app.repository.GasRepository;
+import com.gasmap.app.service.fuelService;
+import net.bytebuddy.asm.Advice;
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,9 @@ public class GasServiceImpl implements GasService {
 
     @Autowired
     FuelRepository fuel_repository;
+
+    @Autowired
+    fuelService fService;
 
     @Autowired
     public GasServiceImpl(GasRepository repository) {
@@ -42,6 +47,20 @@ public class GasServiceImpl implements GasService {
     @Override
     public Gas getById(int i){
         return repository.findById(i);
+    }
+
+    @Override
+    public String addFuelToGas(int id, Double price, String fuel) {
+        try{
+            Gas g = repository.findById(id);
+            Fuel f = new Fuel(fuel,price,id);
+            fService.addFuel(f);
+            g.fuels_gas.add(f);
+            return "Fuel added!";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return "Could not add fuel to that Gas";
     }
 
 
@@ -129,6 +148,7 @@ public class GasServiceImpl implements GasService {
             if(!oFuel.isBefore(LocalDate.now())){
                 return "Cannot change until tomorrow";
             }
+            oldFuel.addNewPrice(price);
             oldFuel.setChange_fuel(LocalDate.now().toString());
             oldFuel.setPrice_fuel(price);
             fuel_repository.save(oldFuel);
@@ -160,6 +180,7 @@ public class GasServiceImpl implements GasService {
             if(!oFuel.isBefore(LocalDate.now())){
                 return "Cannot change until tomorrow";
             }
+            oldFuel.addNewPrice(price);
             oldFuel.setChange_fuel(LocalDate.now().toString());
             oldFuel.setPrice_fuel(price);
             fuel_repository.save(oldFuel);
@@ -189,6 +210,7 @@ public class GasServiceImpl implements GasService {
             if(!oFuel.isBefore(ld)){
                 return "Cannot change until tomorrow";
             }
+            oldFuel.addNewPrice(price);
             oldFuel.setChange_fuel(ld.toString());
             oldFuel.setPrice_fuel(price);
             fuel_repository.save(oldFuel);
@@ -229,30 +251,10 @@ public class GasServiceImpl implements GasService {
     public String updateServices(int id, String[] servicesArray) {
         try{
             Gas g = repository.findById(id);
-            /*
-            Set<String> missing = g.getServices_gas();
-            // get the services that existed previously in gas station and not in the updated services array
-            missing.removeAll(Arrays.asList(servicesArray));
-            //System.out.println("MISSING: " + missing.toString());
-            Set<String> expected = g.getServices_gas();
-
-            //System.out.println("EXPECTED ANTES DE ACTUALIZAR: " + expected.toString());
-
-            //remove the services from Expected set that do not exist in the updated services
-            expected.removeAll(missing);
-            //System.out.println("EXPECTED DESPUES DE ACTUALIZAR: " + expected.toString());
-            // add the new services
-            g.setServices_gas(expected);
-            for (String s : servicesArray){
-                g.addService(s);
-            }
-            */
 
             Set<String> newSet = new HashSet<>(0);
             newSet.addAll(Arrays.asList(servicesArray));
             g.setServices_gas(newSet);
-
-
 
             repository.save(g);
             return "Changed correctly";

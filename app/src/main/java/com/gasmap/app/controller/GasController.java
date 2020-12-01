@@ -80,6 +80,21 @@ public class GasController {
     }
 
 
+    @ApiOperation(value = "Adds a new Fuel to a given Gas' id", response = String.class)
+    @PostMapping(value = "/addFuel", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<String> addFuel(@RequestParam("id_gas") int id_gas, @RequestParam("price") double price,
+                                          @RequestParam("fuel") String fuel, HttpServletResponse response){
+        try{
+            String res = gasService.addFuelToGas(id_gas, price, fuel);
+            return new ResponseEntity<String>(res, HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<String>("Cannot resolve operation", HttpStatus.BAD_REQUEST);
+    }
+
+
     @ApiOperation(value = "Updates a certain Fuel's price, given Gas' Lat and Lon", response = String.class)
     @PostMapping(value = "/updatePriceLatLon", produces = "application/json")
     @ResponseBody
@@ -108,6 +123,23 @@ public class GasController {
         }
         return new ResponseEntity<String>("Cannot resolve operation", HttpStatus.BAD_REQUEST);
     }
+
+
+    @ApiOperation(value = "Returns a certain fuel's price record", response = Double[].class)
+    @GetMapping(value = "/getRecordFuel", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<Double[]> getRecordFuel(@RequestParam("id_gas") int id_gas, @RequestParam("fuel") String fuel,
+                                                    HttpServletResponse response){
+        try{
+            Double[] res = fuelService.getRecord(fuel, id_gas);
+            return new ResponseEntity<Double[]>(res, HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+    }
+
+
     
     @ApiOperation(value = "Updates all gas info", response = String.class)
     @PostMapping(value = "/updateGas", produces = "application/json")

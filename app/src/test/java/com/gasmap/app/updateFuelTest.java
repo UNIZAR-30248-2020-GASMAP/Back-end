@@ -121,6 +121,37 @@ public class updateFuelTest {
 
     }
 
+
+    @Test
+    public void priceRecord(){
+        Fuel newFuel = new Fuel();
+        newFuel.setId_gas(g1.getId_gas());
+        newFuel.setPrice_fuel(1.0);
+        newFuel.setId_fuel("priceRecord");
+        fservice.addFuel(newFuel);
+
+        //Add 5 prices to a Fuel
+        for(int i=0; i<4; i++){
+            newFuel.setPrice_fuel(newFuel.getPrice_fuel()*1.01);
+            service.updateFuelDepenInjection(g1.getLatitude_gas(), g1.getLongitude_gas(), newFuel.getPrice_fuel(),
+                    newFuel.getId_fuel(), LocalDate.now().plusDays(i+1));
+        }
+        newFuel = fservice.findFuelByIdAndGas(newFuel.getId_fuel(), newFuel.getId_gas());
+        assertEquals(5,newFuel.getLast_prices().size());
+
+        //Add a 6th price and check that the 2nd price became 1st
+
+        Double number2 = newFuel.getLast_prices().get(1);
+        newFuel.setPrice_fuel(newFuel.getPrice_fuel()*1.01);
+        service.updateFuelDepenInjection(g1.getLatitude_gas(), g1.getLongitude_gas(), newFuel.getPrice_fuel(),
+                newFuel.getId_fuel(), LocalDate.now().plusDays(10));
+        newFuel = fservice.findFuelByIdAndGas(newFuel.getId_fuel(), newFuel.getId_gas());
+
+        assertEquals(number2,newFuel.getLast_prices().get(0));
+
+        fservice.deleteFuel(newFuel);
+    }
+
     @After
     public void deleteData(){
         service.deleteGas(g1);

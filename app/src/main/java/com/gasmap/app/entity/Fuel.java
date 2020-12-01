@@ -7,8 +7,7 @@ import org.apache.tomcat.jni.Local;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.Objects;
+import java.util.*;
 
 //Entity Gas Station with its attributes and relationships.
 @Entity
@@ -29,6 +28,10 @@ public class Fuel implements Serializable {
 
     @Column(name = "change_fuel")
     String change_fuel;
+
+    //List of prices
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<Double> last_prices = new ArrayList<>();
 
 
     public Fuel() { this.change_fuel = LocalDate.now().toString(); }
@@ -66,6 +69,27 @@ public class Fuel implements Serializable {
     public String getChange_fuel() { return this.change_fuel; }
 
     public void setChange_fuel(String change) { this.change_fuel = change; }
+
+    public List<Double> getLast_prices() {
+        return last_prices;
+    }
+
+    public void setLast_prices(List<Double> last_prices) {
+        this.last_prices = last_prices;
+    }
+
+    public void addNewPrice(Double p){
+        LinkedList ll = new LinkedList();
+        for(Double d : this.last_prices){
+            ll.addLast(d);
+        }
+        if(ll.size() >=5){
+            ll.removeFirst();
+        }
+        ll.addLast(p);
+
+        this.last_prices = ll;
+    }
 
     public Integer getId_gas() {
         return id_gas;

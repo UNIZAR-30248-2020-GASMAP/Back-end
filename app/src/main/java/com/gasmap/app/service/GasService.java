@@ -17,6 +17,8 @@ public interface GasService {
     public boolean deleteGas(Gas g);
 
     public Gas getById(int i);
+
+    public String addFuelToGas(int id, Double price, String fuel);
     public String updateFuelLonLat(Double lat, Double lon, Double price, String fuel);
     public String updateFuel(int id, Double price, String fuel);
 

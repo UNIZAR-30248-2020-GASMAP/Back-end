@@ -8,4 +8,5 @@ public interface fuelService {
     boolean addFuel(Fuel f);
     boolean deleteFuel(Fuel f);
     Fuel findFuelByIdAndGas(String idFuel, int idGas);
+    Double[] getRecord(String idFuel, int idGas);
 }

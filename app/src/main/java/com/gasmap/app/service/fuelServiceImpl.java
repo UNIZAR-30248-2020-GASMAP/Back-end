@@ -26,6 +26,7 @@ public class fuelServiceImpl implements fuelService {
     @Override
     public boolean addFuel(Fuel f) {
         try{
+            f.addNewPrice(f.getPrice_fuel());
             frepository.save(f);
             return true;
         }catch(Exception e){
@@ -49,6 +50,17 @@ public class fuelServiceImpl implements fuelService {
     public Fuel findFuelByIdAndGas(String idFuel, int idGas){
         try{
             return frepository.findFuelByIdAndGas(idFuel, idGas);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Double[] getRecord(String idFuel, int idGas) {
+        try{
+            Fuel f = frepository.findFuelByIdAndGas(idFuel,idGas);
+            return f.getLast_prices().toArray(new Double[0]);
         }catch(Exception e){
             e.printStackTrace();
         }
