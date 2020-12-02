@@ -2,4 +2,5 @@ language: java
 jdk:
 - openjdk11
 
+before_script: cd ap
 before_install: cd app
