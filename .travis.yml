@@ -1,3 +1,6 @@
 language: java
-jdk:
-- openjdk11
+sudo: true
+jdk: openjdk11
+before_install:
+  - cd app
+  - chmod +x mvnw
