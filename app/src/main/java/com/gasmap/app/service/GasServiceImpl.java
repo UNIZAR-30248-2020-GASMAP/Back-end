@@ -137,7 +137,7 @@ public class GasServiceImpl implements GasService {
             Gas g = repository.findByLatLon(lat,lon);
             Fuel oldFuel = fuel_repository.findFuelByIdAndGas(fuel,g.getId_gas());
             if(oldFuel == null){
-                return "Fuel not found";
+                return addFuelToGas(g.getId_gas(),price,fuel);
             }
             if(price.equals(oldFuel.getPrice_fuel())){
                 return "Changed correctly";
@@ -169,7 +169,7 @@ public class GasServiceImpl implements GasService {
             }
             Fuel oldFuel = fuel_repository.findFuelByIdAndGas(fuel,g.getId_gas());
             if(oldFuel == null){
-                return "Fuel not found";
+                return addFuelToGas(g.getId_gas(),price,fuel);
             }
             if(price.equals(oldFuel.getPrice_fuel())){
                 return "Changed correctly";
@@ -198,7 +198,7 @@ public class GasServiceImpl implements GasService {
             Gas g = repository.findById(id);
             Fuel oldFuel = fuel_repository.findFuelByIdAndGas(fuel,g.getId_gas());
             if(oldFuel == null){
-                return "Fuel not found";
+                return addFuelToGas(g.getId_gas(),price,fuel);
             }
             oldFuel.addNewPrice(price);
             oldFuel.setChange_fuel(LocalDate.now().toString());
@@ -210,6 +210,18 @@ public class GasServiceImpl implements GasService {
             e.printStackTrace();
         }
         return "Cannot resolve operation";
+    }
+
+    @Override
+    public String deleteFuel(int id, String fuel) {
+        try{
+            Fuel f = fuel_repository.findFuelByIdAndGas(fuel,id);
+            fuel_repository.delete(f);
+            return "Deleted correctly";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return "Could not delete it";
     }
 
 

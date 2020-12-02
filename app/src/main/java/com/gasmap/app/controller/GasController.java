@@ -220,7 +220,22 @@ public class GasController {
         }
         return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
-    
+
+
+
+    @ApiOperation(value = "Deletes a Fuel", response = String.class)
+    @PostMapping(value = "/deleteFuel", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<String> deleteFuel(@RequestParam("id_gas") int id, @RequestParam("fuel") String fuel,
+                                            HttpServletResponse response){
+        try{
+            String res = gasService.deleteFuel(id, fuel);
+            return new ResponseEntity<String>(res, HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<String>("Could not delete it", HttpStatus.BAD_REQUEST);
+    }
 
 
     @ApiOperation(value = "Adds a Test data Gas", response = Boolean.class)
