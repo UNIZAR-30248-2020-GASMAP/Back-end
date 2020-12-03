@@ -5,6 +5,7 @@ import com.gasmap.app.entity.Fuel;
 import com.gasmap.app.entity.Gas;
 import com.gasmap.app.service.GasService;
 import com.gasmap.app.service.fuelService;
+import org.apache.tomcat.jni.Local;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,19 +59,22 @@ public class updateFuelTest {
     @Test
     public void Test1(){
 
+        //It won't work, gas does not exist
+        assertEquals("Gas not found", service.updateFuel(-1,-1.0,null));
+
         String response = service.updateFuelLonLat(g1.getLatitude_gas(),g1.getLongitude_gas(),1.0,"Unknown");
-        String response2 = service.updateFuel(g1.getId_gas(),1.0,"Unknown");
+        String response2 = service.updateFuel(g1.getId_gas(),1.0,"Unknown1");
 
         //It won't work, fuel does not exist
-        assertEquals("Fuel not found", response);
-        assertEquals("Fuel not found", response2);
+        assertEquals("Fuel added!", response);
+        assertEquals("Fuel added!", response2);
 
         response = service.updateFuelLonLat(g1.getLatitude_gas(),g1.getLongitude_gas(),null,null);
         response2 = service.updateFuel(g1.getId_gas(),null,null);
 
         //It won't work, fuel does not exist
-        assertEquals("Fuel not found", response);
-        assertEquals("Fuel not found", response2);
+        assertEquals("Could not add fuel to that Gas", response);
+        assertEquals("Could not add fuel to that Gas", response2);
 
         //Change with the same price
         response = service.updateFuelLonLat(g1.getLatitude_gas(),g1.getLongitude_gas(),f.getPrice_fuel(),f.getId_fuel());
@@ -108,19 +112,54 @@ public class updateFuelTest {
 
         //It will work, we are changing "tomorrow"
         response = service.updateFuelDepenInjection(g1.getLatitude_gas(),g1.getLongitude_gas(),
-                                        f.getPrice_fuel(),f.getId_fuel(),LocalDate.now().plusDays(1));
+                                        f.getPrice_fuel()*1.001,f.getId_fuel(),LocalDate.now().plusDays(1));
 
         assertEquals("Changed correctly", response);
 
         Fuel fuel = new Fuel();
         fuel = fservice.findFuelByIdAndGas(f.getId_fuel(), f.getId_gas());
-
+        f.setPrice_fuel(f.getPrice_fuel()*1.001);
         //Confirm price is changed correctly
         assertEquals(f, fuel);
         response2 = service.updateFuel(g1.getId_gas(),null,null);
 
     }
 
+    @Test
+    public void updateFuelManTest(){
+        assertEquals("Cannot resolve operation", service.updateFuelMan(-1,0.0,null));
+        assertEquals("Fuel added!", service.updateFuelMan(f.getId_gas(), 30.0, "updateFuelManTest"));
+        assertEquals("Changed correctly", service.updateFuelMan(f.getId_gas(), 30.0, f.getId_fuel()));
+    }
+
+    @Test
+    public void updateFuelDepenInjectionTest(){
+        // Gas null
+        assertEquals("Cannot resolve operation", service.updateFuelDepenInjection(-1.0,-1.0,0.0, null, LocalDate.now()));
+        // Fuel null
+        assertEquals("Fuel not found", service.updateFuelDepenInjection(g1.getLatitude_gas(),g1.getLongitude_gas(),0.0, null, LocalDate.now()));
+        // Same Price
+        assertEquals("Changed correctly",
+                service.updateFuelDepenInjection(g1.getLatitude_gas(), g1.getLongitude_gas(),
+                        f.getPrice_fuel(), f.getId_fuel(), LocalDate.now().plusDays(1)));
+        // Price restriction
+        assertEquals("Cannot change to that price",
+                service.updateFuelDepenInjection(g1.getLatitude_gas(), g1.getLongitude_gas(),
+                        f.getPrice_fuel()*10, f.getId_fuel(), LocalDate.now().plusDays(1)));
+        // Time restriction
+        assertEquals("Cannot change until tomorrow",
+                service.updateFuelDepenInjection(g1.getLatitude_gas(), g1.getLongitude_gas(),
+                        f.getPrice_fuel()*1.001, f.getId_fuel(), LocalDate.now().minusDays(1)));
+    }
+
+    @Test
+    public void deleteFuelTest(){
+        // Null Fuel
+        assertEquals("Could not delete it", service.deleteFuel(-1, null));
+        f = new Fuel("deleteFuelTest", 1.1, g1.getId_gas());
+        fservice.addFuel(f);
+        assertEquals("Deleted correctly", service.deleteFuel(f.getId_gas(), f.getId_fuel()));
+    }
 
     @Test
     public void priceRecord(){

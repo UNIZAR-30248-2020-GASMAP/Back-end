@@ -21,13 +21,7 @@ public class TecServiceImpl implements TecService {
     public Boolean login(String email, String pass) {
         try{
             Tec t = trepository.findByEmail(email);
-            if(t == null){
-                return false;
-            }
-            if(!t.getPass().equals(pass)){
-                return false;
-            }
-            return true;
+            return t.getPass().equals(pass);
         }catch(Exception e){
             e.printStackTrace();
         }

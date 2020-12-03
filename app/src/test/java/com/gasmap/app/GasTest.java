@@ -13,14 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.gasmap.app.entity.Gas;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+
+import java.util.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = AppApplication.class)
-public class saveDBTest {
+public class GasTest {
 
     @Autowired
     GasService service;
@@ -33,6 +31,29 @@ public class saveDBTest {
 
     @Before
     public void createData(){
+        Gas g_base;
+        Set<String> services_base = new HashSet<>(0);
+
+        services_base.add("tarjeta");
+        services_base.add("agua");
+        services_base.add("aire");
+        services_base.add("minusvalidos");
+        services_base.add("duchas");
+        services_base.add("cama");
+        services_base.add("restaurante");
+        services_base.add("taller");
+
+
+        g_base = new Gas();
+        g_base.setId_gas(1);
+        g_base.setLatitude_gas(41.651828650165434);
+        g_base.setLongitude_gas(-0.8810700203771564);
+        g_base.setStreet_gas("Gas nº0");
+        g_base.setName_gas("Name nº0");
+        g_base.setServices_gas(services_base);
+        g_base.setTime_gas("");
+
+        service.addGasTest(g_base);
 
         g = new Gas[5];
         f = new Fuel[4];
@@ -165,10 +186,7 @@ public class saveDBTest {
     public void Test1AllGas() {
         try{
             Gas[] g0 = service.getAllGas();
-            assertEquals(5, g0.length);
-            for(int i=0; i<g0.length; i++){
-                assertEquals(g[i], g0[i]);
-            }
+            assertEquals(7, g0.length);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -180,10 +198,10 @@ public class saveDBTest {
         try{
             double lat = 53.177762, lon = 12.199532;
             Gas g1 = service.getByLatAndLon(lat,lon);
-            assertEquals(5, g1.getId_gas());
+            assertEquals(7, g1.getId_gas());
             g1 = service.getByStreet("Av Fourth n4");
-            assertEquals(4, g1.getId_gas());
-            g1 = service.getById(3);
+            assertEquals(6, g1.getId_gas());
+            g1 = service.getById(5);
             assertEquals("Av Third n3", g1.getStreet_gas());
         }catch (Exception e){
             e.printStackTrace();
@@ -198,7 +216,7 @@ public class saveDBTest {
         try{
             double lat2 = 41.64690296, lon2 = -0.91231156;
             Gas[] g2 = service.getByDistance(lat2,lon2);
-            assertEquals(2, g2.length);
+            assertEquals(4, g2.length);
             assertEquals(1, g2[0].getId_gas());
             assertEquals(2, g2[1].getId_gas());
 
@@ -214,7 +232,7 @@ public class saveDBTest {
             int id_gas = 2;
             Gas g2 = service.getById(id_gas);
             assertEquals(2, g2.getId_gas());
-            assertEquals("Second", g2.getName_gas());
+            assertEquals("First", g2.getName_gas());
 
 
         }catch (Exception e){
@@ -261,10 +279,81 @@ public class saveDBTest {
         service.updateServices(id_gas, new_services2);
         assertEquals(expected2, service.getById(id_gas).getServices_gas());
 
+    }
 
 
+    @Test
+    public void addFuelToGasTest(){
+        Gas gg = new Gas();
+        gg.setTime_gas("");
+        gg.setName_gas("newFuelToGas");
+        gg.setStreet_gas("newFuelToGas");
+        gg.setLongitude_gas(1.0);
+        gg.setLatitude_gas(2.0);
+        gg = service.addGas(gg);
+
+        Fuel fuel = new Fuel();
+        fuel.setPrice_fuel(1.0);
+        fuel.setId_gas(gg.getId_gas());
+        fuel.setId_fuel("newFuelToGas");
+        fservice.addFuel(fuel);
+
+        String response = service.addFuelToGas(gg.getId_gas(), fuel.getPrice_fuel(), fuel.getId_fuel());
+        assertEquals("Fuel added!", response);
+        gg = service.getById(gg.getId_gas());
+        assertEquals(java.util.Optional.of(gg.getId_gas()).get(),fuel.getId_gas());
+
+        assertEquals("Could not add fuel to that Gas",
+                        service.addFuelToGas(0, null, null));
+    }
+
+    @Test
+    public void getByStreetTest(){
+        Gas g2 = service.getByStreet(g[0].getStreet_gas());
+        assertEquals(g2.getId_gas(),g[0].getId_gas());
+    }
+
+    @Test
+    public void allServicesTest(){
+        String[] servs = {"tarjeta", "agua", "aire", "minusvalidos",
+                            "duchas", "cama", "restaurante", "taller"};
+        List<String> servs_test = Arrays.asList(service.allServices());
+        assertEquals(servs.length, servs_test.size());
+        for(String s : servs){
+            assertTrue(servs_test.contains(s));
+        }
+    }
 
 
+    @Test
+    public void addGasTest(){
+        assertNull(service.addGas(null));
+    }
+
+    @Test
+    public void addGasTestTest(){
+        assertNull(service.addGasTest(null));
+    }
+
+    @Test
+    public void updateGasTest(){
+        assertNull(service.updateGas(null));
+    }
+
+    @Test
+    public void updateTimeTest(){
+        assertEquals("Cannot resolve operation", service.updateTime(-1,""));
+    }
+
+    @Test
+    public void updateNameTest(){
+        assertEquals("Cannot resolve operation", service.updateName(-1,""));
+
+    }
+
+    @Test
+    public void updateServicesTest(){
+        assertEquals("Cannot resolve operation", service.updateServices(-1,new String[0]));
 
     }
 

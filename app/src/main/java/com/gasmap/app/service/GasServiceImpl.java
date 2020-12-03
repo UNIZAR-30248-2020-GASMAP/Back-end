@@ -77,13 +77,8 @@ public class GasServiceImpl implements GasService {
 
     @Override
     public String[] allServices() {
-        try{
-            Gas g = repository.findById(1);
-            return g.getServices_gas().toArray(new String[0]);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return null;
+        Gas g = repository.findById(1);
+        return g.getServices_gas().toArray(new String[0]);
     }
 
     @Override
@@ -115,7 +110,6 @@ public class GasServiceImpl implements GasService {
         }catch(Exception e){
             e.printStackTrace();
         }
-
         return null;
     }
 

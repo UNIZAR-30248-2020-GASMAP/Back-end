@@ -40,9 +40,16 @@ public class tecLoginTest {
         email = "tec@tec.com";
         pass = "TecPass";
 
-        Boolean yes = tservice.login(email,pass);
         //Should be able to login
-        assertTrue(yes);
+        assertTrue(tservice.login(email,pass));
+
+        //Try to login with a wrong Tec password
+        pass = "wrong";
+
+        assertFalse(tservice.login(email,pass));
+
+        //Try to login with null
+        assertFalse(tservice.login(null,null));
     }
 
 
