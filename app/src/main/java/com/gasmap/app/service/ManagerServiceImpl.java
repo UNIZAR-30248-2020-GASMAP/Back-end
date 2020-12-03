@@ -42,7 +42,10 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public Manager getManagerWithPass(String email, String pass){return repository.findByEmailAndPass(email,pass);}
+    public Manager getManagerWithPass(String email, String pass){
+
+        return repository.findByEmailAndPass(email,String.valueOf(pass.hashCode()));
+    }
 
     @Override
     public Manager loginManager(String email, String pass) {
@@ -80,7 +83,7 @@ public class ManagerServiceImpl implements ManagerService {
                 throw new Exception("The names are not the same");
             }
             m.setName_manager(newName);
-            m = repository.save(m);
+            repository.save(m);
             return true;
         }catch(Exception e) {
             System.out.println(e);
@@ -94,13 +97,14 @@ public class ManagerServiceImpl implements ManagerService {
         try {
             Manager m = repository.findByEmail(email);
 
-            if(!m.getPass_manager().equals(pass)) {
+
+            if(!m.getPass_manager().equals(String.valueOf(pass.hashCode()))) {
                 throw new Exception("The password do not coincide");
             }
 
             m.setPass_manager(newPass);
             m.setPass_manager(String.valueOf(m.getPass_manager().hashCode()));
-            m = repository.save(m);
+            repository.save(m);
             return true;
         }catch(Exception e) {
             e.printStackTrace();

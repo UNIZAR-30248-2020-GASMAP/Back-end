@@ -3,6 +3,7 @@ package com.gasmap.app;
 
 import com.gasmap.app.entity.Fuel;
 import com.gasmap.app.entity.Gas;
+import com.gasmap.app.entity.Manager;
 import com.gasmap.app.service.GasService;
 import com.gasmap.app.service.fuelService;
 import org.apache.tomcat.jni.Local;
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = AppApplication.class)
@@ -188,8 +190,39 @@ public class updateFuelTest {
 
         assertEquals(number2,newFuel.getLast_prices().get(0));
 
+        // check that the array remains the same size
+        assertEquals(5, fservice.getRecord("priceRecord",g1.getId_gas()).length);
+
         fservice.deleteFuel(newFuel);
     }
+    @Test
+    public void getAllFuelsTest(){
+        Fuel[] fuels = fservice.getAll();
+        assertEquals(2, fuels.length);
+    }
+    @Test
+    public void addFuelTestFails(){
+        Fuel f = null;
+        assertEquals(false, fservice.addFuel(f));
+    }
+
+    @Test
+    public void deleteFuelTestFails(){
+        Fuel f = null;
+        assertEquals(false, fservice.deleteFuel(f));
+    }
+
+    @Test
+    public void findFuelByIdAndGasFailTest(){
+        assertNull(fservice.findFuelByIdAndGas(null, -1));
+    }
+
+    @Test
+    public void getRecordFailTest(){
+        assertNull(fservice.getRecord("Fuel2", 0));
+    }
+
+
 
     @After
     public void deleteData(){

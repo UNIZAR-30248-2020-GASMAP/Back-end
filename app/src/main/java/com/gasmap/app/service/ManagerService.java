@@ -4,8 +4,16 @@ import com.gasmap.app.entity.Manager;
 import org.springframework.stereotype.Service;
 
 public interface ManagerService {
+
+    // Given an object Manager
+    // Returns the save result after adding the manager to the DB
     public Manager addManager(Manager m);
+
+    // Given two strings that represent a certain manager's email
+    // Returns that Manager object checking that the email coincides with what is stored in the DB
     public Manager getManager(String m);
+
+    // Returns an array with all the managers stored in the DB
     public Manager[] getAll();
 
     // Given two strings that represent a certain manager's email and password

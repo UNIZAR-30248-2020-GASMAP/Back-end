@@ -48,12 +48,7 @@ public class fuelServiceImpl implements fuelService {
 
     @Override
     public Fuel findFuelByIdAndGas(String idFuel, int idGas){
-        try{
             return frepository.findFuelByIdAndGas(idFuel, idGas);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return null;
     }
 
     @Override

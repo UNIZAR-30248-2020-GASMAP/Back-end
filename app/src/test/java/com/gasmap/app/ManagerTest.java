@@ -177,6 +177,93 @@ public class ManagerTest {
         }
     }
 
+    @Test
+    public void addManagerTestFails(){
+        Manager m = null;
+        assertEquals(null, mservice.addManager(m));
+    }
+
+    @Test
+    public void getAllManagersTest(){
+        Manager[] managers = mservice.getAll();
+        assertEquals(2, managers.length);
+    }
+
+    @Test
+    public void getManagerWithPassTest(){
+        Manager test = mservice.getManagerWithPass("nacho@nacho.com", "nacho");
+        assertEquals(m1, test);
+    }
+
+    @Test
+    public void LogInNotFoundTest(){
+        try{
+            Manager test = mservice.loginManager("undefined@undefined.com", "nacho");
+            assertEquals(null, test);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void changeNameTest(){
+        try{
+            boolean result = mservice.changeName("nacho@nacho.com","nacho","nacho2");
+            assertEquals(true, result);
+            assertEquals("nacho2", mservice.getManager("nacho@nacho.com").getName_manager());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void changeNameFailsTest(){
+        try{
+            boolean result = mservice.changeName("nacho@nacho.com","nacho3","nacho2");
+            assertEquals(false, result);
+            assertNotEquals("nacho2", mservice.getManager("nacho@nacho.com").getName_manager());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void changePassTest(){
+        try{
+            String newPass = "nacho2";
+            boolean result = mservice.changePass("nacho@nacho.com","nacho",newPass);
+            assertEquals(true, result);
+
+            assertEquals(newPass.hashCode(), Integer.parseInt(mservice.getManager("nacho@nacho.com").getPass_manager()));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void changePassFailsTest(){
+        try{
+            String newPass = "nacho2";
+            boolean result = mservice.changePass("nacho@nacho.com","nacho23",newPass);
+            assertEquals(false, result);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void deleteFailsTest(){
+        try{
+            //Manager test = new Manager("a@a.com","a",976123456,"1234567891234",null);
+            boolean result = mservice.deleteManager(null);
+            assertEquals(false, result);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
     @After
     public void deleteData() throws Exception {
 
