@@ -61,4 +61,5 @@ public interface GasService {
 
     // Delete an existent Fuel into a given Gas identified with ID
     public String deleteFuel(int id, String fuel);
+    
 }
