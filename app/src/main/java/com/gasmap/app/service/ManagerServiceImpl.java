@@ -69,19 +69,6 @@ public class ManagerServiceImpl implements ManagerService {
         return null;
     }
 
-    @Override
-    public Boolean updatePass(String email, String oldPass, String newPass) throws Exception{
-        try {
-            Manager m = repository.findByEmailAndPass(email, oldPass);
-            m.setPass_manager(newPass);
-            m.setPass_manager(String.valueOf(m.getPass_manager().hashCode()));
-            m = repository.save(m);
-            return true;
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
     @Override
     public Boolean changeName(String email, String name, String newName) throws Exception {
