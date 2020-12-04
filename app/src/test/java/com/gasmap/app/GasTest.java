@@ -28,10 +28,9 @@ public class GasTest {
 
     Gas[] g;
     Fuel f[];
-
+    Gas g_base;
     @Before
     public void createData(){
-        Gas g_base;
         Set<String> services_base = new HashSet<>(0);
 
         services_base.add("tarjeta");
@@ -53,7 +52,7 @@ public class GasTest {
         g_base.setServices_gas(services_base);
         g_base.setTime_gas("");
 
-        service.addGasTest(g_base);
+        g_base = service.addGasTest(g_base);
 
         g = new Gas[5];
         f = new Fuel[4];
@@ -186,7 +185,7 @@ public class GasTest {
     public void Test1AllGas() {
         try{
             Gas[] g0 = service.getAllGas();
-            assertEquals(7, g0.length);
+            assertEquals(6, g0.length);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -198,10 +197,10 @@ public class GasTest {
         try{
             double lat = 53.177762, lon = 12.199532;
             Gas g1 = service.getByLatAndLon(lat,lon);
-            assertEquals(7, g1.getId_gas());
-            g1 = service.getByStreet("Av Fourth n4");
             assertEquals(6, g1.getId_gas());
-            g1 = service.getById(5);
+            g1 = service.getByStreet("Av Fourth n4");
+            assertEquals(5, g1.getId_gas());
+            g1 = service.getById(4);
             assertEquals("Av Third n3", g1.getStreet_gas());
         }catch (Exception e){
             e.printStackTrace();
@@ -216,7 +215,7 @@ public class GasTest {
         try{
             double lat2 = 41.64690296, lon2 = -0.91231156;
             Gas[] g2 = service.getByDistance(lat2,lon2);
-            assertEquals(4, g2.length);
+            assertEquals(3, g2.length);
             assertEquals(1, g2[0].getId_gas());
             assertEquals(2, g2[1].getId_gas());
 
@@ -241,7 +240,7 @@ public class GasTest {
     }
 
     @Test
-    public void TesUpdateGas(){
+    public void TestUpdateGas(){
         int id_gas = 2;
         String new_name = "New Name";
         String new_time = "Mon: 8:00-23:00\\n" +
@@ -278,7 +277,8 @@ public class GasTest {
         expected2.add("service1");
         service.updateServices(id_gas, new_services2);
         assertEquals(expected2, service.getById(id_gas).getServices_gas());
-
+        Gas deleteGas = service.getById(id_gas);
+        service.deleteGas(deleteGas);
     }
 
 
@@ -305,6 +305,7 @@ public class GasTest {
 
         assertEquals("Could not add fuel to that Gas",
                         service.addFuelToGas(0, null, null));
+        service.deleteGas(gg);
     }
 
     @Test
@@ -324,6 +325,10 @@ public class GasTest {
         }
     }
 
+    @Test
+    public void updateFuelLonLat(){
+        assertEquals("Cannot resolve operation", service.updateFuelLonLat(-10000.0,-10000.0,-1.0,null));
+    }
 
     @Test
     public void addGasTest(){
@@ -358,28 +363,31 @@ public class GasTest {
     }
 
     @Test
+    public void deleteGasTest(){
+        assertFalse(service.deleteGas(null));
+    }
+
+    @Test
     @Ignore
     public void testSplit(){
         String new_services = "[\"duchas\",\"taller\"]";
-        System.out.println("Services: " + new_services);
         String[] arrayString = new_services.split(",");
         for(int i=0; i<arrayString.length; i++){
             arrayString[i] = arrayString[i].replace("[","");
             arrayString[i] = arrayString[i].replace("]","");
             arrayString[i] = arrayString[i].replace("\"","");
         }
-        for(String s : arrayString){
-            System.out.println("String: " + s);
-        }
     }
 
     @After
-    public void deleteData(){
+    public void deleteData() {
         for (Gas gas : g){
             service.deleteGas(gas);
         }
         for (Fuel fuel : f){
             fservice.deleteFuel(fuel);
         }
+        service.deleteGas(g_base);
+
     }
 }

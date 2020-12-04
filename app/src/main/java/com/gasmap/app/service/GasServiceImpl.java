@@ -33,6 +33,7 @@ public class GasServiceImpl implements GasService {
     }
 
 
+
     @Override
     public Gas[] getAllGas() throws Exception {
         return repository.findAllGasStations();

@@ -33,17 +33,11 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public Manager[] getAll() {
-        try{
-            return repository.getAllManagers();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return null;
+        return repository.getAllManagers();
     }
 
     @Override
     public Manager getManagerWithPass(String email, String pass){
-
         return repository.findByEmailAndPass(email,String.valueOf(pass.hashCode()));
     }
 

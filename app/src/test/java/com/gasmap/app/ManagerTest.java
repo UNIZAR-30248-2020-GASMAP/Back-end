@@ -56,8 +56,14 @@ public class ManagerTest {
         Set<String> services = new HashSet<String>(0);
         double lon;
         double lat;
-        int id_g1 = 1;
-        int id_g2 = 2;
+        Gas gggg[] = gservice.getAllGas();
+        System.out.println("wtf");
+        for(Gas ggg : gggg){
+            System.out.println(ggg);
+        }
+        int i = gservice.getAllGas().length;
+        int id_g1 = i + 1;
+        int id_g2 = i + 2;
 
         String manager_email;
         String manager_name;
@@ -87,9 +93,11 @@ public class ManagerTest {
         m1 = new Manager(manager_email,manager_name,manager_phone,manager_pass,g1);
         g1.setManager(m1);
         g1.setTime_gas("");
-
-        gservice.addGas(g1);
+        System.out.println("G1BEFORE: " + g1);
+        g1 = gservice.addGas(g1);
         mservice.addManager(m1);
+
+        System.out.println("g1: " + g1);
 
         //Second Manager
         manager_email = "victor@victor.com";
@@ -119,14 +127,18 @@ public class ManagerTest {
         g2.setManager(m2);
         g2.setTime_gas("");
 
-        gservice.addGas(g2);
+        System.out.println("G2BEFORE: " + g2);
+        g2 = gservice.addGas(g2);
         mservice.addManager(m2);
+
+        System.out.println("Length: " + gservice.getAllGas().length);
     }
 
     @Test
     public void Test1() {
         try{
             Gas[] g = gservice.getAllGas();
+            for (Gas gg : g){ System.out.println(gg); }
             Manager mA = mservice.getManager("nacho@nacho.com");
             Manager mB = mservice.getManager("victor@victor.com");
             assertEquals(2, g.length);
