@@ -3,3 +3,4 @@ jdk: openjdk11
 before_install:
   - cd app
   - chmod +x mvnw
+  
