@@ -368,15 +368,30 @@ public class GasTest {
     }
 
     @Test
-    @Ignore
-    public void testSplit(){
-        String new_services = "[\"duchas\",\"taller\"]";
-        String[] arrayString = new_services.split(",");
-        for(int i=0; i<arrayString.length; i++){
-            arrayString[i] = arrayString[i].replace("[","");
-            arrayString[i] = arrayString[i].replace("]","");
-            arrayString[i] = arrayString[i].replace("\"","");
+    public void testGetFuelsSorted(){
+        Fuel[] sortedFuels = service.getFuelSorted(g[4].getId_gas());
+        for(int i=1; i<sortedFuels.length; i++){
+            assertEquals("Fuel" + (i+1), sortedFuels[i].getId_fuel());
         }
+    }
+
+    @Test
+    public void testGetFuelsSortedNull(){
+        assertNull(service.getFuelSorted(-1));
+    }
+
+    @Test
+    public void filterServices(){
+        String[] servicesToFilter = new String[1];
+        servicesToFilter[0] = "Service1";
+        Gas[] filteredGas = service.filteredGas(servicesToFilter,41.6329, -0.9188);
+        assertEquals(1,filteredGas.length);
+        assertEquals(3,filteredGas[0].getId_gas());
+        servicesToFilter = new String[2];
+        servicesToFilter[0] = "Servicex";
+        servicesToFilter[1] = "Servicey";
+        filteredGas = service.filteredGas(servicesToFilter,43.191129,-8.563962);
+        assertEquals(0,filteredGas.length);
     }
 
     @After

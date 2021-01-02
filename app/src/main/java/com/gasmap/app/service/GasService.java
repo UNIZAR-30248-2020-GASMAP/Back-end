@@ -1,5 +1,6 @@
 package com.gasmap.app.service;
 
+import com.gasmap.app.entity.Fuel;
 import com.gasmap.app.entity.Gas;
 
 import java.time.LocalDate;
@@ -61,5 +62,11 @@ public interface GasService {
 
     // Delete an existent Fuel into a given Gas identified with ID
     public String deleteFuel(int id, String fuel);
+
+    // Returns Fuel of a given Gas sorted by price, cheapest to most expensive
+    public Fuel[] getFuelSorted(int id);
+
+    // Returns all Gas within the filtered params
+    public Gas[] filteredGas(String[] services, double lat, double lon);
 
 }

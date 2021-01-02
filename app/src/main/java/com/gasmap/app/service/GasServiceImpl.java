@@ -11,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class GasServiceImpl implements GasService {
@@ -290,5 +288,39 @@ public class GasServiceImpl implements GasService {
             e.printStackTrace();
         }
         return "Cannot resolve operation";
+    }
+
+    @Override
+    public Fuel[] getFuelSorted(int id){
+        try{
+            List<Fuel> list = new ArrayList<>(repository.findById(id).getFuels_gas());
+            Collections.sort(list);
+            return list.toArray(new Fuel[0]);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Gas[] filteredGas(String[] services, double lat, double lon){
+        List<Gas> gasFiltered = new ArrayList<>(0);
+        Gas[] gases = repository.findByDistance(lat, lon);
+        boolean Ok = true;
+        Set<String> setServices;
+        for(Gas g : gases){
+            for(String s : services){
+                setServices = g.getServices_gas();
+                if (!setServices.contains(s) && !s.isEmpty()) {
+                    Ok = false;
+                    break;
+                }
+            }
+            if(Ok){
+                gasFiltered.add(g);
+            }
+            Ok = true;
+        }
+        return gasFiltered.toArray(new Gas[0]);
     }
 }

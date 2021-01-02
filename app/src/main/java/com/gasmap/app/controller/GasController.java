@@ -6,6 +6,7 @@ import com.gasmap.app.service.GasService;
 import com.gasmap.app.service.fuelService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -235,6 +236,42 @@ public class GasController {
             e.printStackTrace();
         }
         return new ResponseEntity<String>("Could not delete it", HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ApiOperation(value = "Returns sorted fuels from a Gas Station, from less expensive to most", response = Fuel[].class)
+    @PostMapping(value = "/getFuelsSorted", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<Fuel[]> getFuelsSorted(@RequestParam("id_gas") int id,
+                                             HttpServletResponse response){
+        try{
+            return new ResponseEntity<>(gasService.getFuelSorted(id),HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ApiOperation(value = "Returns Gas Stations filtered by Services", response = Gas[].class)
+    @PostMapping(value = "/getGasFiltered", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<Gas[]> getGasFiltered(@RequestParam("lat") double lat ,@RequestParam("lon") double lon,
+                                                @RequestParam("new_services") String filter_services,
+                                                HttpServletResponse response){
+        try{
+            String[] arrayString = filter_services.split(",");
+            for(int i=0; i<arrayString.length; i++){
+                arrayString[i] = arrayString[i].replace("[","");
+                arrayString[i] = arrayString[i].replace("]","");
+                arrayString[i] = arrayString[i].replace("\"","");
+            }
+            Gas[] res = gasService.filteredGas(arrayString, lat, lon);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
 

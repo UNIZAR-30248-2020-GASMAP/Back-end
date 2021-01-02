@@ -13,7 +13,7 @@ import java.util.*;
 @Entity
 @IdClass(FuelId.class)
 @Table(name = "Fuel")
-public class Fuel implements Serializable {
+public class Fuel implements Serializable, Comparable<Fuel> {
 
     @Id
     @Column(name = "id_fuel", length = 50)
@@ -120,5 +120,13 @@ public class Fuel implements Serializable {
                 ", price_fuel=" + price_fuel +
                 ", change_fuel=" + change_fuel +
                 '}';
+    }
+
+    // if returns < 0 -> this < that
+    // if returns 0 -> this == that
+    // if returns > 0 -> this > that
+    @Override
+    public int compareTo(Fuel o) {
+        return (int) (price_fuel - o.getPrice_fuel());
     }
 }
