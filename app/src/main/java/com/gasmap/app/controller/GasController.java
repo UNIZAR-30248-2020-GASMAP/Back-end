@@ -44,7 +44,7 @@ public class GasController {
         return null;
     }
 
-    @ApiOperation(value = "Get all Gas inside a certain radius", response = Gas[].class)
+    @ApiOperation(value = "Get all Gas inside a 50km radius", response = Gas[].class)
     @GetMapping(value = "/listByDistance", produces = "application/json")
     @ResponseBody
     public Gas[] listByDistance(@RequestParam("lat") double lat2, @RequestParam("lon") double lon2,  HttpServletResponse response){
@@ -53,6 +53,28 @@ public class GasController {
             System.out.println("Longitud: " + lon2);
             
             Gas[] array = gasService.getByDistance(lat2, lon2);
+
+
+            for (Gas gasStation: array) {
+                System.out.println(gasStation.toString());
+            }
+            return array;
+        }catch(Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    @ApiOperation(value = "Get all Gas inside a certain (range km) radius", response = Gas[].class)
+    @GetMapping(value = "/listByMaxDistance", produces = "application/json")
+    @ResponseBody
+    public Gas[] listByMaxDistance(@RequestParam("lat") double lat2, @RequestParam("lon") double lon2, @RequestParam("range") double range2,  HttpServletResponse response){
+        try {
+            System.out.println("Latitud: " + lat2);
+            System.out.println("Longitud: " + lon2);
+            System.out.println("Rango en kms: " + range2);
+
+            Gas[] array = gasService.getByMaxDistance(lat2, lon2, range2);
 
 
             for (Gas gasStation: array) {

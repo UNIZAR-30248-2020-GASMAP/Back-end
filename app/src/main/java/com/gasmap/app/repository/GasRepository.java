@@ -24,6 +24,9 @@ public interface GasRepository extends CrudRepository<Gas, Integer>{
     @Query(value = "SELECT * FROM ZZGas WHERE (ACOS(SIN(PI()*latitude_gas/180.0)*SIN(PI()*?1/180.0)+COS(PI()*latitude_gas/180.0)*COS(PI()*?1/180.0)*COS(PI()*?2/180.0-PI()*longitude_gas/180.0))*6371) < 50.0", nativeQuery = true)
     public Gas[] findByDistance(double lat2, double lon2);
 
+    @Query(value = "SELECT * FROM ZZGas WHERE (ACOS(SIN(PI()*latitude_gas/180.0)*SIN(PI()*?1/180.0)+COS(PI()*latitude_gas/180.0)*COS(PI()*?1/180.0)*COS(PI()*?2/180.0-PI()*longitude_gas/180.0))*6371) < ?3", nativeQuery = true)
+    public Gas[] findByMaxDistance(double lat2, double lon2, double range);
+
     @Query(value = "SELECT * FROM ZZGas", nativeQuery = true)
     public Gas[] findAllGasStations();
 

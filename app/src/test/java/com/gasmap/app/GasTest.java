@@ -208,8 +208,8 @@ public class GasTest {
     }
 
     // Given some coordinate points within Zaragoza it should
-    // produce a result including the first two Gas stations
-    // g1(Pedrola) and g2(Zaragoza)
+    // produce a result including the first three Gas stations
+    // g1(Zaragoza base) g2(Pedrola) and g3(Zaragoza)
     @Test
     public void TestByDistance(){
         try{
@@ -218,6 +218,25 @@ public class GasTest {
             assertEquals(3, g2.length);
             assertEquals(1, g2[0].getId_gas());
             assertEquals(2, g2[1].getId_gas());
+            assertEquals(3, g2[2].getId_gas());
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    // Given some coordinate points within Zaragoza and an specific range
+    // of 10 km it should produce a result including two Gas stations
+    // g1(Zaragoza base) g3(Zaragoza)
+    @Test
+    public void TestByMaxDistance(){
+        try{
+            double lat2 = 41.64690296, lon2 = -0.91231156;
+            Gas[] g2 = service.getByMaxDistance(lat2,lon2,10.0);
+            assertEquals(2, g2.length);
+            assertEquals(1, g2[0].getId_gas());
+            assertEquals(3, g2[1].getId_gas());
 
 
         }catch (Exception e){
