@@ -46,6 +46,12 @@ public class GasServiceImpl implements GasService {
     }
 
     @Override
+    public Gas[] getByMaxDistance(double lat2, double lon2, double range) throws Exception {
+
+        return repository.findByMaxDistance(lat2,lon2,range);
+    }
+
+    @Override
     public Gas getById(int i){
         return repository.findById(i);
     }

@@ -11,6 +11,9 @@ public interface GasService {
     // Return all Gas which are at 50km or closer
     public Gas[] getByDistance(double lat2, double lon2) throws Exception;
 
+    // Return all Gas which are at an specific range (kms) or closer
+    public Gas[] getByMaxDistance(double lat2, double lon2, double range) throws Exception;
+
     // Return a Gas given its street name
     public Gas getByStreet(String street);
 
