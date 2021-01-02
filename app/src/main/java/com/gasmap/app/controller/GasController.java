@@ -67,7 +67,7 @@ public class GasController {
     @ApiOperation(value = "Get all Gas inside a certain (range km) radius", response = Gas[].class)
     @GetMapping(value = "/listByMaxDistance", produces = "application/json")
     @ResponseBody
-    public Gas[] listByDistance(@RequestParam("lat") double lat2, @RequestParam("lon") double lon2, @RequestParam("range") double range2,  HttpServletResponse response){
+    public Gas[] listByMaxDistance(@RequestParam("lat") double lat2, @RequestParam("lon") double lon2, @RequestParam("range") double range2,  HttpServletResponse response){
         try {
             System.out.println("Latitud: " + lat2);
             System.out.println("Longitud: " + lon2);
