@@ -12,6 +12,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +29,8 @@ public class ManagerController {
     ManagerService mservice;
     @Autowired
     GasService gservice;
+    @Autowired
+    public JavaMailSender emailSender;
 
     @ApiOperation(value = "Operation to log a Manager in", response = Manager.class)
     @ApiImplicitParams({@ApiImplicitParam(name = "email", value = "Manager email"),
@@ -80,7 +84,9 @@ public class ManagerController {
     })
     @PostMapping(value = "/deleteManager", produces = "application/json")
     @ResponseBody
-    public Boolean deleteManager(@RequestParam("email") String email, @RequestParam("password") String password, @RequestParam("passCheck") String passCheck,  HttpServletResponse response, BindingResult result){
+    public Boolean deleteManager(@RequestParam("email") String email, @RequestParam("password") String password,
+                                 @RequestParam("passCheck") String passCheck,  HttpServletResponse response,
+                                 BindingResult result){
 
         try {
 
@@ -115,8 +121,34 @@ public class ManagerController {
         return new ResponseEntity<String>("Cannot resolve operation", HttpStatus.BAD_REQUEST);
     }
 
+    @ApiOperation(value = "Sends a report given Gas' id and the message of the report itself", response = String.class)
+    @PostMapping(value = "/manager/sendReport", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<String> sendReport(@RequestParam("id_gas") int id_gas, @RequestParam("message") String message,
+                                             HttpServletResponse response){
+        if(mservice.sendReport(id_gas,message)){
+            return new ResponseEntity<String>("Report sent, thanks!", HttpStatus.OK);
+        }else{
+            return new ResponseEntity<String>("There has been an issue sending the report", HttpStatus.OK);
+        }
+    }
 
-
-
+    @ApiOperation(value = "Test for Mail Sender", response = void.class)
+    @GetMapping(value = "/mail/test", produces = "application/json")
+    @ResponseBody
+    public void mailSenderTest(HttpServletResponse response){
+        try{
+            String subject = "GasMap, your Gas Station has received a report";
+            SimpleMailMessage sendMessage = new SimpleMailMessage();
+            sendMessage.setFrom("GasMap.Reports@gmail.com");
+            sendMessage.setTo("GasMap.Reports@gmail.com");
+            sendMessage.setSubject(subject);
+            sendMessage.setText("This is a test");
+            emailSender.send(sendMessage);
+            System.out.println("Seems okay, check email");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 
 }

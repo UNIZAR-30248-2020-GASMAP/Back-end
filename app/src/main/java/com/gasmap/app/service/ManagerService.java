@@ -39,4 +39,7 @@ public interface ManagerService {
     // Returns true if the manager it is deleted from the DB
     // otherwise it returns false
     public boolean deleteManager(Manager m) throws Exception;
+
+    // Sends an email to the Gas Station's (given id) manager
+    public Boolean sendReport(int id, String message);
 }

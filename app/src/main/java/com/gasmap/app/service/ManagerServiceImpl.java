@@ -2,9 +2,12 @@ package com.gasmap.app.service;
 
 import com.gasmap.app.entity.Gas;
 import com.gasmap.app.entity.Manager;
+import com.gasmap.app.repository.GasRepository;
 import com.gasmap.app.repository.ManagerRepository;
 import org.apache.commons.validator.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,6 +15,12 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Autowired
     ManagerRepository repository;
+
+    @Autowired
+    GasRepository gasRepository;
+
+    @Autowired
+    public JavaMailSender emailSender;
 
     @Override
     public Manager addManager(Manager m){
@@ -112,6 +121,28 @@ public class ManagerServiceImpl implements ManagerService {
             repository.delete(m);
             return true;
         }catch(Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean sendReport(int id, String message){
+        try {
+            Gas g = gasRepository.findById(id);
+            Manager m = g.getManager();
+            if(m == null || m.equals(new Manager())){
+                throw new Exception("Gas has not Manager");
+            }
+            String subject = "GasMap, your Gas Station has received a report";
+            SimpleMailMessage sendMessage = new SimpleMailMessage();
+            sendMessage.setFrom("GasMap.Reports@gmail.com");
+            sendMessage.setTo(m.getEmail());
+            sendMessage.setSubject(subject);
+            sendMessage.setText(message);
+            emailSender.send(sendMessage);
+            return true;
+        }catch(Exception e) {
             e.printStackTrace();
         }
         return false;

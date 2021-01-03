@@ -7,14 +7,22 @@ import com.gasmap.app.entity.Manager;
 import com.gasmap.app.service.GasService;
 import com.gasmap.app.service.ManagerService;
 import com.gasmap.app.service.fuelService;
+import com.icegreen.greenmail.util.GreenMail;
+import com.icegreen.greenmail.util.GreenMailUtil;
+import com.icegreen.greenmail.util.ServerSetupTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.Resource;
+import javax.mail.Message;
+import javax.mail.MessagingException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,8 +41,14 @@ public class ManagerTest {
     @Autowired
     ManagerService mservice;
 
+    @Resource
+    private JavaMailSenderImpl emailSender;
+
+    private GreenMail testSmtp;
+
     Gas g1;
     Gas g2;
+    Gas g3;
 
     Manager m1;
     Manager m2;
@@ -46,9 +60,19 @@ public class ManagerTest {
 
     @Before
     public void createData() throws Exception {
+
+        testSmtp = new GreenMail(ServerSetupTest.SMTP);
+        testSmtp.start();
+
+        //don't forget to set the test port!
+        emailSender.setPort(3025);
+        emailSender.setHost("localhost");
+
+
         //Declaration of Gas' attributes
         g1 = new Gas();
         g2 = new Gas();
+        g3 = new Gas();
 
         String gas_name;
         String gas_street;
@@ -56,11 +80,6 @@ public class ManagerTest {
         Set<String> services = new HashSet<String>(0);
         double lon;
         double lat;
-        Gas gggg[] = gservice.getAllGas();
-        System.out.println("wtf");
-        for(Gas ggg : gggg){
-            System.out.println(ggg);
-        }
         int i = gservice.getAllGas().length;
         int id_g1 = i + 1;
         int id_g2 = i + 2;
@@ -93,11 +112,9 @@ public class ManagerTest {
         m1 = new Manager(manager_email,manager_name,manager_phone,manager_pass,g1);
         g1.setManager(m1);
         g1.setTime_gas("");
-        System.out.println("G1BEFORE: " + g1);
         g1 = gservice.addGas(g1);
         mservice.addManager(m1);
 
-        System.out.println("g1: " + g1);
 
         //Second Manager
         manager_email = "victor@victor.com";
@@ -127,18 +144,26 @@ public class ManagerTest {
         g2.setManager(m2);
         g2.setTime_gas("");
 
-        System.out.println("G2BEFORE: " + g2);
         g2 = gservice.addGas(g2);
         mservice.addManager(m2);
 
-        System.out.println("Length: " + gservice.getAllGas().length);
+        //Third Manager and Gas
+        m1 = new Manager("GasMap.Reports@gmail.com","Jarreta",666777888,"password",g3);
+        g3.setStreet_gas("Street3");
+        g3.setLatitude_gas(0.0);
+        g3.setLongitude_gas(0.0);
+        g3.setName_gas("Name3");
+        g3.setTime_gas("");
+        g3.setId_gas(99);
+        g3.setManager(m1);
+        gservice.addGasTest(g3);
+        mservice.addManager(m1);
     }
 
     @Test
     public void Test1() {
         try{
             Gas[] g = gservice.getAllGas();
-            for (Gas gg : g){ System.out.println(gg); }
             Manager mA = mservice.getManager("nacho@nacho.com");
             Manager mB = mservice.getManager("victor@victor.com");
             assertEquals(2, g.length);
@@ -276,9 +301,33 @@ public class ManagerTest {
         }
     }
 
+    @Test
+    public void sendReportTest() throws MessagingException {
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setFrom("GasMap.Reports@gmail.com");
+        message.setTo("GasMap.Reports@gmail.com");
+        message.setSubject("sendReportTest");
+        message.setText("This is a test");
+        emailSender.send(message);
+
+        Message[] messages = testSmtp.getReceivedMessages();
+        assertEquals(1, messages.length);
+        assertEquals("sendReportTest", messages[0].getSubject());
+        String body = GreenMailUtil.getBody(messages[0]).replaceAll("=\r?\n", "");
+        assertEquals("This is a test", body);
+        assertTrue(mservice.sendReport(g3.getId_gas(),"This is a test"));
+
+        g3.setManager(null);
+        gservice.updateGas(g3);
+        assertFalse(mservice.sendReport(g3.getId_gas(),"This is a test"));
+
+        assertFalse(mservice.sendReport(-1,null));
+    }
+
     @After
     public void deleteData() throws Exception {
-
+        testSmtp.stop();
         gservice.deleteGas(g1);
         gservice.deleteGas(g2);
         mservice.deleteManager(m1);
