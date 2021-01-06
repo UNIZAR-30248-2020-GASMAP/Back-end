@@ -275,7 +275,7 @@ public class GasController {
     }
 
 
-    @ApiOperation(value = "Returns sorted fuels from a Gas Station, from less expensive to most", response = Fuel[].class)
+    @ApiOperation(value = "Returns a Gas array that contain a certain Fuel given lat and lon", response = Gas[].class)
     @GetMapping(value = "/getFuelsSorted", produces = "application/json")
     @ResponseBody
     public ResponseEntity<Gas[]> getFuelsSorted(@RequestParam("fuel") String id, @RequestParam("lat") Double lat,
