@@ -276,12 +276,12 @@ public class GasController {
 
 
     @ApiOperation(value = "Returns sorted fuels from a Gas Station, from less expensive to most", response = Fuel[].class)
-    @PostMapping(value = "/getFuelsSorted", produces = "application/json")
+    @GetMapping(value = "/getFuelsSorted", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<Fuel[]> getFuelsSorted(@RequestParam("id_gas") int id,
-                                             HttpServletResponse response){
+    public ResponseEntity<Gas[]> getFuelsSorted(@RequestParam("fuel") String id, @RequestParam("lat") Double lat,
+                                                 @RequestParam("lon") Double lon, HttpServletResponse response){
         try{
-            return new ResponseEntity<>(gasService.getFuelSorted(id),HttpStatus.OK);
+            return new ResponseEntity<>(gasService.getFuelSorted(id,lat,lon),HttpStatus.OK);
         }catch(Exception e){
             e.printStackTrace();
         }

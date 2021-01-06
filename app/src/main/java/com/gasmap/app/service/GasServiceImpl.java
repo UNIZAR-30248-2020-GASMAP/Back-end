@@ -312,15 +312,18 @@ public class GasServiceImpl implements GasService {
 
 
     @Override
-    public Fuel[] getFuelSorted(int id){
-        try{
-            List<Fuel> list = new ArrayList<>(repository.findById(id).getFuels_gas());
-            Collections.sort(list);
-            return list.toArray(new Fuel[0]);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return null;
+    public Gas[] getFuelSorted(String fuel, Double lat, Double lon) throws Exception {
+            List<Gas> res = new ArrayList<>(0);
+            Gas[] gases = this.getByDistance(lat,lon);
+            for(Gas g : gases){
+                for(Fuel f : g.getFuels_gas()){
+                    if(f.getId_fuel().equals(fuel)){
+                        res.add(g);
+                        break;
+                    }
+                }
+            }
+            return res.toArray(new Gas[0]);
     }
 
     @Override

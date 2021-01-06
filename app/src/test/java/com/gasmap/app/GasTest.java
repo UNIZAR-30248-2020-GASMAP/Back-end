@@ -406,16 +406,16 @@ public class GasTest {
     }
 
     @Test
-    public void testGetFuelsSorted(){
-        Fuel[] sortedFuels = service.getFuelSorted(g[4].getId_gas());
-        for(int i=1; i<sortedFuels.length; i++){
-            assertEquals("Fuel" + (i+1), sortedFuels[i].getId_fuel());
-        }
-    }
+    public void testGetFuelsSorted() throws Exception {
+        Gas[] sortedGas = service.getFuelSorted("Fuel4",g[4].getLatitude_gas(),g[4].getLongitude_gas());
+        assertEquals(1, sortedGas.length);
+        assertEquals(g[4].getId_gas(),sortedGas[0].getId_gas());
 
-    @Test
-    public void testGetFuelsSortedNull(){
-        assertNull(service.getFuelSorted(-1));
+        sortedGas = service.getFuelSorted("FuelX",g[4].getLatitude_gas(),g[4].getLongitude_gas());
+        assertEquals(0,sortedGas.length);
+
+        sortedGas = service.getFuelSorted("Fuel1",0.0,0.0);
+        assertEquals(0,sortedGas.length);
     }
 
     @Test

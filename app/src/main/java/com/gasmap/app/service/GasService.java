@@ -70,7 +70,7 @@ public interface GasService {
     public String deleteFuel(int id, String fuel);
 
     // Returns Fuel of a given Gas sorted by price, cheapest to most expensive
-    public Fuel[] getFuelSorted(int id);
+    public Gas[] getFuelSorted(String fuel, Double lat, Double lon) throws Exception;
 
     // Returns all Gas within the filtered params
     public Gas[] filteredGas(String[] services, double lat, double lon);
