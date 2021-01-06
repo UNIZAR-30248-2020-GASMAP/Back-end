@@ -60,6 +60,9 @@ public interface GasService {
     // Update an existent Gas' services
     public String updateServices(int id, String[] servicesArray);
 
+    // Update an existent Gas' services
+    public String updateEditPrice(int id, int newEditPrice);
+
     // Delete an existent Gas
     public boolean deleteGas(Gas g);
 

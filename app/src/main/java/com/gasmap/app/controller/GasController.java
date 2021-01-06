@@ -230,6 +230,20 @@ public class GasController {
         return new ResponseEntity<String>("Gas could not be updated", HttpStatus.BAD_REQUEST);
     }
 
+    @ApiOperation(value = "Updates gas edit price permission", response = String.class)
+    @PostMapping(value = "/updateGasEditPrice")
+    @ResponseBody
+    public ResponseEntity<String> updateGasEditPrice(@RequestParam("id_gas") int id_gas, @RequestParam("newEditPrice") int newEditPrice,
+                                                    HttpServletResponse response){
+        try{
+            String res = gasService.updateEditPrice(id_gas,newEditPrice);
+            return new ResponseEntity<String>(res, HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<String>("Gas edit price could not be updated", HttpStatus.BAD_REQUEST);
+    }
+
 
     @ApiOperation(value = "Give all services", response = String[].class)
     @GetMapping(value = "/allServices", produces = "application/json")

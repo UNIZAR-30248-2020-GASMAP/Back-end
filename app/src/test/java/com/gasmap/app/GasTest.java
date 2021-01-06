@@ -51,6 +51,7 @@ public class GasTest {
         g_base.setName_gas("Name nº0");
         g_base.setServices_gas(services_base);
         g_base.setTime_gas("");
+        g_base.setEdit_price(1);
 
         g_base = service.addGasTest(g_base);
 
@@ -86,6 +87,7 @@ public class GasTest {
         g[0].setStreet_gas(street);
         g[0].setServices_gas(services);
         g[0].setTime_gas(time);
+        g[0].setEdit_price(1);
         g[0].setLongitude_gas(lon);
         g[0].setLatitude_gas(lat);
 
@@ -100,6 +102,7 @@ public class GasTest {
         g[1].setStreet_gas(street);
 
         g[1].setTime_gas(time);
+        g[1].setEdit_price(1);
 //        g2.fuels_gas.put("Fuel1",1.1);
         g[1] = service.addGas(g[1]);
         f[0] = new Fuel("Fuel1",1.1, g[1].getId_gas());
@@ -122,6 +125,7 @@ public class GasTest {
         street = "Av Third n3";
         g[2].setStreet_gas(street);
         g[2].setTime_gas(time);
+        g[2].setEdit_price(1);
         g[2] = service.addGas(g[2]);
         f[1] = new Fuel("Fuel2",2.2, g[2].getId_gas());
         fservice.addFuel(f[1]);
@@ -142,6 +146,7 @@ public class GasTest {
         street = "Av Fourth n4";
         g[3].setStreet_gas(street);
         g[3].setTime_gas(time);
+        g[3].setEdit_price(1);
         g[3] = service.addGas(g[3]);
         f[2] = new Fuel("Fuel3",3.3, g[3].getId_gas());
         fservice.addFuel(f[2]);
@@ -164,6 +169,7 @@ public class GasTest {
         street = "Av Fifth n5";
         g[4].setStreet_gas(street);
         g[4].setTime_gas(time);
+        g[4].setEdit_price(1);
         g[4] = service.addGas(g[4]);
         f[3] = new Fuel("Fuel4",4.4, g[4].getId_gas());
         fservice.addFuel(f[3]);
@@ -378,6 +384,19 @@ public class GasTest {
     @Test
     public void updateServicesTest(){
         assertEquals("Cannot resolve operation", service.updateServices(-1,new String[0]));
+
+    }
+
+    @Test
+    public void updateEditPrice(){
+        assertEquals("Changed correctly", service.updateEditPrice(2,0));
+        assertEquals(0, service.getById(2).getEdit_price());
+
+    }
+
+    @Test
+    public void updateServicesTestFail(){
+        assertEquals("Cannot resolve operation", service.updateEditPrice(-1, 0));
 
     }
 

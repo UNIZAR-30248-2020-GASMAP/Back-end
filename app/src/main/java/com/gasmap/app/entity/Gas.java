@@ -49,6 +49,10 @@ public class Gas implements Serializable {
     @JoinColumn(name = "email_manager_gas", referencedColumnName = "email")
     private Manager manager;
 
+    //Gas' permission to edit prices (1 = true, 0 = false)
+    @Column(name = "edit_price", nullable = false, length = 1)
+    Integer edit_price;
+
     public Gas() {
     }
 
@@ -102,7 +106,8 @@ public class Gas implements Serializable {
         this.manager = manager;
     }
 
-    public Gas(Integer id_gas, String name_gas, String street_gas, double latitude_gas, double longitude_gas, String time_gas, Set<String> services_gas, Set<Fuel> fuels_gas, Manager manager) {
+    public Gas(Integer id_gas, String name_gas, String street_gas, double latitude_gas, double longitude_gas, String time_gas,
+               Set<String> services_gas, Set<Fuel> fuels_gas, Manager manager, Integer edit_price) {
         this.id_gas = id_gas;
         this.name_gas = name_gas;
         this.street_gas = street_gas;
@@ -112,6 +117,7 @@ public class Gas implements Serializable {
         this.services_gas = services_gas;
         this.fuels_gas = fuels_gas;
         this.manager = manager;
+        this.edit_price = edit_price;
     }
 
     public int getId_gas() {
@@ -140,6 +146,8 @@ public class Gas implements Serializable {
 
     public Manager getManager() { return manager; }
 
+    public int getEdit_price() { return edit_price; }
+
     public void setId_gas(int id_gas) {
         this.id_gas = id_gas;
     }
@@ -166,6 +174,10 @@ public class Gas implements Serializable {
 
     public void setManager(Manager manager) { this.manager = manager; }
 
+    public void setEdit_price(int edit_price) {
+        this.edit_price = edit_price;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -179,7 +191,8 @@ public class Gas implements Serializable {
                 time_gas.equals(gas.time_gas) &&
                 services_gas.equals(gas.services_gas) &&
                 fuels_gas.equals(gas.fuels_gas) &&
-                manager.equals(gas.manager);
+                manager.equals(gas.manager) &&
+                edit_price.equals(gas.edit_price);
     }
 
     @Override

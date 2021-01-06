@@ -297,6 +297,21 @@ public class GasServiceImpl implements GasService {
     }
 
     @Override
+    public String updateEditPrice(int id, int newEditPrice){
+        try{
+            Gas g = repository.findById(id);
+            g.setEdit_price(newEditPrice);
+
+            repository.save(g);
+            return "Changed correctly";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return "Cannot resolve operation";
+    }
+
+
+    @Override
     public Fuel[] getFuelSorted(int id){
         try{
             List<Fuel> list = new ArrayList<>(repository.findById(id).getFuels_gas());
