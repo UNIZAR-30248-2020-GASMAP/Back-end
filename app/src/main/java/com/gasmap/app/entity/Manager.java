@@ -48,7 +48,6 @@ public class Manager {
     public String getEmail() {
         return email_manager;
     }
-
     public void setEmail_manager(String email_manager) {
         this.email_manager = email_manager;
     }
@@ -60,14 +59,16 @@ public class Manager {
     public void setName_manager(String name_manager) {
         this.name_manager = name_manager;
     }
-
+    /*
     public int getPhone_manager() {
         return phone_manager;
     }
-
+    */
     public void setPhone_manager(int phone_manager) {
         this.phone_manager = phone_manager;
     }
+
+
 
     public String getPass_manager() {
         return pass_manager;
@@ -81,9 +82,11 @@ public class Manager {
         return gas;
     }
 
+
     public void setGas(Gas gas) {
         this.gas = gas;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -96,6 +99,7 @@ public class Manager {
                 Objects.equals(pass_manager, manager.pass_manager);
     }
 
+    /*
     @Override
     public int hashCode() {
         return Objects.hash(email_manager, name_manager, phone_manager, pass_manager);
@@ -111,4 +115,6 @@ public class Manager {
                 ", " + this.gas.toString() + '\'' +
                 '}';
     }
+
+     */
 }

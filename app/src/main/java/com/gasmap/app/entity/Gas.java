@@ -51,7 +51,7 @@ public class Gas implements Serializable {
 
     //Gas' permission to edit prices (1 = true, 0 = false)
     @Column(name = "edit_price", nullable = false, length = 1)
-    Integer edit_price;
+    Integer edit_price = 1;
 
     public Gas() {
     }
@@ -59,6 +59,7 @@ public class Gas implements Serializable {
 
     //Self-made functions
 
+    /*
     //Add service to gas
     public boolean addService(String service){
         if(!this.services_gas.contains(service)){
@@ -76,11 +77,14 @@ public class Gas implements Serializable {
         return true;
     }
 
+     */
+
     //Add new fuel to this gas' list
     public boolean newFuel(Fuel f){
         return this.fuels_gas.add(f);
     }
 
+    /*
     //Remove fuel from this gas' list
     public boolean removeFuel(Fuel f){
         if(this.fuels_gas.contains(f)){
@@ -99,7 +103,10 @@ public class Gas implements Serializable {
         return false;
     }
 
+     */
+
     //Generated functions
+    /*
     public Gas(String street_gas, Set<String> services_gas, Manager manager) {
         this.street_gas = street_gas;
         this.services_gas = services_gas;
@@ -119,6 +126,8 @@ public class Gas implements Serializable {
         this.manager = manager;
         this.edit_price = edit_price;
     }
+
+     */
 
     public int getId_gas() {
         return id_gas;
@@ -195,11 +204,15 @@ public class Gas implements Serializable {
                 edit_price.equals(gas.edit_price);
     }
 
+    /*
     @Override
     public int hashCode() {
         return Objects.hash(id_gas, street_gas, services_gas, fuels_gas);
     }
 
+     */
+
+    /*
     @Override
     public String toString() {
         String stringServices = "[";
@@ -225,7 +238,7 @@ public class Gas implements Serializable {
                 "," + stringFuels +
                 '}';
     }
-
+     */
 
 
 }

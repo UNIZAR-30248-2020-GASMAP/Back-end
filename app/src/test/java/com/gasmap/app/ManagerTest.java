@@ -52,6 +52,7 @@ public class ManagerTest {
 
     Manager m1;
     Manager m2;
+    Manager m3;
 
     Fuel f1;
     Fuel f2;
@@ -148,16 +149,20 @@ public class ManagerTest {
         mservice.addManager(m2);
 
         //Third Manager and Gas
-        m1 = new Manager("GasMap.Reports@gmail.com","Jarreta",666777888,"password",g3);
+        Manager m3 = new Manager("GasMap.Reports@gmail.com","Jarreta",
+                        666777888,"password",g3);
+        m3.setEmail_manager("GasMap.Reports@gmail.com");
+        m3.setPhone_manager(666777888);
+        m3.setGas(g3);
         g3.setStreet_gas("Street3");
         g3.setLatitude_gas(0.0);
         g3.setLongitude_gas(0.0);
         g3.setName_gas("Name3");
         g3.setTime_gas("");
         g3.setId_gas(99);
-        g3.setManager(m1);
+        g3.setManager(m3);
         gservice.addGasTest(g3);
-        mservice.addManager(m1);
+        mservice.addManager(m3);
     }
 
     @Test
@@ -166,7 +171,7 @@ public class ManagerTest {
             Gas[] g = gservice.getAllGas();
             Manager mA = mservice.getManager("nacho@nacho.com");
             Manager mB = mservice.getManager("victor@victor.com");
-            assertEquals(2, g.length);
+            assertEquals(3, g.length);
             assertEquals(mA, g[0].getManager());
             assertEquals(mB, g[1].getManager());
             assertEquals(mA.getGas(),g[0]);
@@ -223,7 +228,7 @@ public class ManagerTest {
     @Test
     public void getAllManagersTest(){
         Manager[] managers = mservice.getAll();
-        assertEquals(2, managers.length);
+        assertEquals(3, managers.length);
     }
 
     @Test
@@ -332,6 +337,7 @@ public class ManagerTest {
         gservice.deleteGas(g2);
         mservice.deleteManager(m1);
         mservice.deleteManager(m2);
+        mservice.deleteManager(m3);
         fservice.deleteFuel(f1);
 
     }

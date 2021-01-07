@@ -13,7 +13,7 @@ import java.util.*;
 @Entity
 @IdClass(FuelId.class)
 @Table(name = "Fuel")
-public class Fuel implements Serializable, Comparable<Fuel> {
+public class Fuel implements Serializable {
 
     @Id
     @Column(name = "id_fuel", length = 50)
@@ -36,10 +36,13 @@ public class Fuel implements Serializable, Comparable<Fuel> {
 
     public Fuel() { this.change_fuel = LocalDate.now().toString(); }
 
+    /*
     public Fuel(String id_fuel) {
         this.id_fuel = id_fuel;
         this.change_fuel = LocalDate.now().toString();
     }
+
+     */
 
     public Fuel(String id_fuel, Double price_fuel, Integer id_gas) {
         this.id_fuel = id_fuel;
@@ -74,9 +77,12 @@ public class Fuel implements Serializable, Comparable<Fuel> {
         return last_prices;
     }
 
+    /*
     public void setLast_prices(List<Double> last_prices) {
         this.last_prices = last_prices;
     }
+
+     */
 
     public void addNewPrice(Double p){
         LinkedList ll = new LinkedList();
@@ -113,6 +119,7 @@ public class Fuel implements Serializable, Comparable<Fuel> {
         return Objects.hash(id_fuel, price_fuel);
     }
 
+    /*
     @Override
     public String toString() {
         return "Fuel{" +
@@ -122,11 +129,6 @@ public class Fuel implements Serializable, Comparable<Fuel> {
                 '}';
     }
 
-    // if returns < 0 -> this < that
-    // if returns 0 -> this == that
-    // if returns > 0 -> this > that
-    @Override
-    public int compareTo(Fuel o) {
-        return (int) (price_fuel - o.getPrice_fuel());
-    }
+     */
+
 }

@@ -25,6 +25,7 @@ public class Tec {
     public Tec() {
     }
 
+    /*
     public Tec(@NotBlank @Email String email, @NotBlank String pass) {
         this.email = email;
         this.pass = pass;
@@ -38,10 +39,13 @@ public class Tec {
         this.email = email;
     }
 
+     */
+
     public String getPass() {
         return pass;
     }
 
+    /*
     public void setPass(String pass) {
         this.pass = pass;
     }
@@ -67,4 +71,6 @@ public class Tec {
                 ", pass='" + pass + '\'' +
                 '}';
     }
+
+     */
 }
